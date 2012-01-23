@@ -1,0 +1,97 @@
+#lander_widget {
+  font-size: 0.8em;
+  background-color: #3BAAE3; /*This color obviously changes with the jQuery UI CSS*/
+  height: 45px;
+  z-index: 5;
+  position: fixed;
+  top: 100px;
+} 
+
+#lander_handle {
+  float: left;
+  height: 100%;
+  width: 17px;
+}
+
+#lander_tabs {
+  float: left;
+  box-shadow: 3px 3px 9px #888888;
+}
+
+#active_positions, #closed_positions {
+  background-color: #EEEEEE;
+  border: 1px solid #C0C0C0;
+  padding: 3px;
+}
+
+#active_positions {
+  float: left;
+  width: 78%;
+}
+
+#closed_positions {
+  margin-left: 81%;
+  height: 100%;
+}
+
+.lander_tab_header, .lander_tab_content {
+  margin-bottom: 1em;
+}
+
+.lander_tab_footer {
+  color: gray;
+  margin: auto -1.4em;   /* The size of this margin depends on the size of the padding for .ui-tabs-panel in the jQuery UI CSS file */
+  margin-top: 1em;
+  border-top: 1px solid #C0C0C0; 
+  /* Since this border line would most likely always be the same as the border value for #active_positions and #closed_positions,
+   * perhaps I could simply include ".lander_tab_footer" in that list and then make a rule after that for only .lander_tab_footer 
+   * which has "border-bottom: none; border-left: none; border-right: none;".
+   */
+  text-align: center;
+}
+
+#lander_widget input, #lander_widget textarea {
+  width: 100%;
+  margin: 0.25em auto;
+}
+
+#lander_widget form {
+  width: 80%;
+  margin: auto auto;
+}
+
+.clearboth {
+  clear: both;
+}
+
+.round {
+  -webkit-border-radius: 10px;
+}
+
+#active_positions table, #closed_positions table {
+  width: 100%;
+}
+#active_positions th, #closed_positions th {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+#active_positions td, #closed_positions td  {
+  text-align: center;
+  font-size: 1em;
+}
+
+#active_table td:hover {
+  font-weight: bold;
+}
+
+.lander_button {
+  display: inline;
+  padding: 0.5em;
+  background-color: #EEEEEE;
+  border: 1px solid #C0C0C0;
+}
+
+.lander_button:hover {
+  background-color: #3BAAE3; /*This color obviously changes with the jQuery UI CSS*/
+}
+

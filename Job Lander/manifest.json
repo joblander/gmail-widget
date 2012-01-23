@@ -1,0 +1,15 @@
+{
+  "name": "Job Lander for Chrome",
+  "version": "1.0",
+  "description": "Job Lander is a Chrome extension that makes job search efficient and easy to manage.",
+  "permissions": [ "http://mail.google.com/", "https://mail.google.com/" ],
+  "content_scripts": [
+    {
+      "all_frames": true,
+      "matches": [ "http://mail.google.com/*", "https://mail.google.com/*" ],
+      "css": ["css/style.css", "css/cupertino/jquery-ui-1.8.17.custom.css"],
+      "js": ["jquery-1.4.2.js", "jquery-ui-1.8.16.js", "lander.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
