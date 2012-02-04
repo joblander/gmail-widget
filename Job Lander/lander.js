@@ -16,8 +16,8 @@
       "   <div class='lander_tab_header'>"+
       "     <span class='title'>Product Manager, San Francisco</span>"+
       "     <div class='lander_button'>Configurate</div>"+
-      "     <div class='lander_button'>Steps</div>"+
-      "     <div class='lander_button'>List</div>"+
+      "     <div class='lander_button'><img id='steps_icon' style='height:1em;width:1em;padding-right:0.5em;'/>Steps</div>"+
+      "     <div class='lander_button'><img id='list_icon' style='height:1em;width:1em;padding-right:0.5em'/>List</div>"+
       "   </div>"+
       "   <div class='lander_tab_content'>"+
       "     <div id='active_positions'>"+
@@ -53,6 +53,47 @@
       "       </table>"+
       "     </div>"+
       "     <div class='clearboth'></div>"+
+      "     <div id='closed_expanded' style='display:none'>"+ 
+              "<div id='tabs-min'>"+
+              " <ul>"+
+              "   <li><a href='#tabs-6'>not interested (56)</a></li>"+
+              "   <li><a href='#tabs-7'>got rejected (28)</a></li>"+
+              "   <li><a href='#tabs-8'>got an offer (2)</a></li>"+
+              " </ul>"+
+              " <div id='tabs-6'>"+
+              "   <div id='closed_items' style='height:175px;overflow:auto'>"+
+              "      <div class='closed_item'>"+
+              "        <div class='closed_item_header'>"+
+              "          Google - San Francisco, CA | Posted Today"+
+              "        </div>"+
+              "        <div class='closed_item_description' style='width:448px;word-wrap:normal;'>"+
+              "          The role: Product Marketing Manager, Consumer... Work closely with Product Managers, Engineers and User Experience teams to develop optimal products for ... <a href='#'>More Details</a>"+
+              "        </div>"+
+              "      </div>"+
+              "      <div class='closed_item'>"+
+              "        <div class='closed_item_header'>"+
+              "          Yelp - San Francisco, CA | Posted Yesterday"+
+              "        </div>"+
+              "        <div class='closed_item_description' style='width:448px;word-wrap:normal;'>"+
+              "          The role: Description goes here ... <a href='#'>More Details</a>"+
+              "        </div>"+
+              "      </div>"+
+              "      <div class='closed_item'>"+
+              "        <div class='closed_item_header'>"+
+              "          Tweeter - San Francisco, CA | Posted Yesterday"+
+              "        </div>"+
+              "        <div class='closed_item_description' style='width:448px;word-wrap:normal;'>"+
+              "          The role: Description goes here ... <a href='#'>More Details</a>"+
+              "        </div>"+
+              "      </div>"+
+              "   </div>"+
+              " </div>"+
+              " <div id='tabs-7'>"+
+              " </div>"+
+              " <div id='tabs-8'>"+
+              " </div>"+
+              "</div>"+
+      "     </div>"+
       "   </div>"+
       "   <div class='lander_tab_footer'>"+
       "     View and Move Positions - Steps"+
@@ -111,10 +152,24 @@
 
     $("#lander_widget", frame).draggable({ iframeFix: true, containment: "document", handle: "#lander_handle" });
     $("#lander_tabs", frame).tabs({ collapsible: true, selected: -1 });
+    $("#tabs-min", frame).tabs({ collapsible: true, selected: -1 });
     //TODO: Make .lander_datepicker class elements pop out a datepicker. Not sure why the following code doesn't work:
     //$(".lander_datepicker", frame).datepicker();
     //That code doesn't work if left right there. If, instead, I run that statement in the Console after the page is up, it does work.
     $(".ui-tabs .ui-tabs-panel", frame).css({'padding-bottom':'0em'});
+    $("#closed_positions", frame).click(function() {
+      var div = $("#closed_expanded", frame);
+      if (div.is(":visible")) { div.hide(); } 
+      else { div.show(); }
+    });
+    $(".closed_item_header", frame).click(function() {
+      var head = $(this);
+      var desc = head.next();
+      if (desc.is(":visible")) { desc.hide(); head.css('font-weight','normal'); } // I should probably change these to toggleable classes
+      else { desc.show(); head.css('font-weight','bold'); }
+    });
+    $("#steps_icon", frame).attr("src", chrome.extension.getURL("linesstep.png"));
+    $("#list_icon", frame).attr("src", chrome.extension.getURL("lineslist.png"));
   }
   
   $(function() {

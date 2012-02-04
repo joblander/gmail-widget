@@ -17,8 +17,15 @@
 //Make steps sortable
 //Make sure Closed div is same height as Active. Can be done with javascript
 //Do hover for acttive position table
+//Make hover cursor hand, not caret
 //Change Active Table to Divs. It get scrunched up
+//Find the overall color of the background and make taskfore match that
 //Download jQuery UI 1.8.17
+//The active positions and closed positions divs dont have the same bottom margin. if the widget is stretched too much; the user may wanna stretch the widget at some point
+//Fix the width of the closed positions list to not be a hard coded width
+//Make the Closed div connected to the expanded part...?
+//Work on resizing
+//Does it load when the page is offscreen or anothertab has focus?
       "       <div>"+
       "         <table>"+
       "           <tr>"+

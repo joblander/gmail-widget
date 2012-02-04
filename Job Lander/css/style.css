@@ -18,10 +18,11 @@
   box-shadow: 3px 3px 9px #888888;
 }
 
-#active_positions, #closed_positions {
+#closed_expanded, #active_positions, #closed_positions {
   background-color: #EEEEEE;
   border: 1px solid #C0C0C0;
   padding: 3px;
+  margin-bottom: 5px;
 }
 
 #active_positions {
@@ -92,6 +93,62 @@
 }
 
 .lander_button:hover {
-  background-color: #3BAAE3; /*This color obviously changes with the jQuery UI CSS*/
+  background-color: #AED0EA; /*This color obviously changes with the jQuery UI CSS*/
 }
+
+.closed_item_header  {    
+  padding: 0.5em;
+  background-color: #EEEEEE;
+  border: 1px dashed #C0C0C0;
+}
+
+.closed_item_description  {    
+  padding: 0.5em;
+  background-color: #EEEEEE;
+  border: 1px solid #C0C0C0;
+}
+
+.closed_item  {    
+  margin-bottom: 0.5em;
+}
+
+#closed_positions:hover, .closed_item_header:hover {
+  background-color: #AED0EA; /*This color obviously changes with the jQuery UI CSS*/
+}
+
+/*
+.expanded_closed_item  .closed_item_header {
+  font-weight:bold;
+}
+*/
+
+/* Thanks to http://keith-wood.name/uiTabs.html for the following on how to style jquery for minimalist styling */
+
+#tabs-min {
+	background: transparent;
+	border: none;
+}
+#tabs-min .ui-widget-header {
+	background: transparent;
+	border: none;
+	border-bottom: 1px solid #c0c0c0;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+}
+#tabs-min .ui-state-default {
+	background: transparent;
+	border: none;
+}
+#tabs-min .ui-state-active {
+	background: transparent url(img/uiTabsArrow.png) no-repeat bottom center;
+	border: none;
+}
+#tabs-min .ui-state-default a {
+	color: #c0c0c0;
+}
+#tabs-min .ui-state-active a {
+	color: #3BAAE3; /*This color obviously changes with the jQuery UI CSS*/
+}
+
 
