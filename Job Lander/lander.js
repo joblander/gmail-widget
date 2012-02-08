@@ -100,14 +100,14 @@
       "   </div>"+
       " </div>"+
       " <div id='tabs-2'>"+
-      "   <form>"+
-      "     <input type='text' placeholder='Position Name'/><br/>"+
-      "     <textarea placeholder='Description'/><br/>"+
-      "     <input type='text' placeholder='Company'/><br/>"+
-      "     <textarea placeholder='Comments'/><br/>"+
-      "     <input type='text' placeholder='Link to Application'/><br/>"+
-      "     <input type='text' class='lander_datepicker' placeholder='Application Due Date'/><br/>"+
-      "     <input type='submit' value='Create and Move'>"+
+      "   <form id='lander_create_position'>"+
+      "     <input id='lander_position_name' type='text' placeholder='Position Name'/><br/>"+
+      "     <textarea id='lander_position_description' placeholder='Description'/><br/>"+
+      "     <input id='lander_postition_company' type='text' placeholder='Company'/><br/>"+
+      "     <textarea id='lander_position_comments' placeholder='Comments'/><br/>"+
+      "     <input id='lander_position_app_link' type='text' placeholder='Link to Application'/><br/>"+
+      "     <input id='lander_position_app_due_date' type='text' class='lander_datepicker' placeholder='Application Due Date'/><br/>"+
+      "     <input id='lander_position_submit' type='submit' value='Create and Move'>"+
       "   </form>"+
       "   <div class='lander_tab_footer'>"+
       "     Create New Position"+
@@ -170,6 +170,29 @@
     });
     $("#steps_icon", frame).attr("src", chrome.extension.getURL("linesstep.png"));
     $("#list_icon", frame).attr("src", chrome.extension.getURL("lineslist.png"));
+    $("#lander_create_position", frame).submit(function(){
+      var position = {};
+      position.name = $("#lander_position_name", frame).val();
+      position.details = {};
+      position.details.description = $("#lander_position_description", frame).val();
+      position.details.company = $("#lander_position_company", frame).val();
+      position.details.comments = $("#lander_position_comments", frame).val();
+      position.details.app_link = $("#lander_position_app_link", frame).val();
+      position.details.app_due_date = $("#lander_position_app_due_date", frame).val();
+      /*$.post("http://joblander.herokuapp.com/users/1/positions.json", JSON.stringify(position), 
+        function(data) {
+          console.log(JSON.stringify(data));
+        }
+      );*/
+      $.ajax({
+        url:"http://joblander.herokuapp.com/users/1/positions.json",
+        type:"POST",
+        data:JSON.stringify(position),
+        contentType:"application/json"
+      });
+      
+       return false;
+    });
   }
   
   $(function() {
