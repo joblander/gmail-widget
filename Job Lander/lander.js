@@ -179,19 +179,13 @@
       position.details.comments = $("#lander_position_comments", frame).val();
       position.details.app_link = $("#lander_position_app_link", frame).val();
       position.details.app_due_date = $("#lander_position_app_due_date", frame).val();
-      /*$.post("http://joblander.herokuapp.com/users/1/positions.json", JSON.stringify(position), 
-        function(data) {
-          console.log(JSON.stringify(data));
-        }
-      );*/
       $.ajax({
         url:"http://joblander.herokuapp.com/users/1/positions.json",
         type:"POST",
         data:JSON.stringify(position),
         contentType:"application/json"
       });
-      
-       return false;
+      return false;
     });
   }
   
