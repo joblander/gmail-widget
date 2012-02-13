@@ -127,13 +127,13 @@ jld.pos.render = function() {
 // This function is called when a 'Create a New Position' button is hit.
 jld.pos.createNewPosition = function(){
 	var position = {};
-	position.name = $("#new_position_name", frame).val();
+	position.name = $("#new_position_name").val();
 	position.details = {};
-	position.details.description = $("#new_position_description", frame).val();
-	position.details.company = $("#new_position_company", frame).val();
-	position.details.comments = $("#new_position_comments", frame).val();
-	position.details.app_link = $("#new_position_app_link", frame).val();
-	position.details.app_due_date = $("#new_position_app_due_date", frame).val();
+	position.details.description = $("#new_position_description").val();
+	position.details.company = $("#new_position_company").val();
+	position.details.comments = $("#new_position_comments").val();
+	position.details.app_link = $("#new_position_app_link").val();
+	position.details.app_due_date = $("#new_position_app_due_date").val();
 	$.ajax({
 		url:"http://joblander.herokuapp.com/users/1/positions.json",
 		type:"POST",

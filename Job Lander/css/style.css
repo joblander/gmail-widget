@@ -1,16 +1,11 @@
-#lander_widget {
-  font-size: 0.8em;
-  background-color: #3BAAE3; /*This color obviously changes with the jQuery UI CSS*/
-  height: 45px;
-  z-index: 5;
-  position: fixed;
-  top: 100px;
-} 
-
 #lander_handle {
-  float: left;
-  height: 100%;
-  width: 17px;
+  cursor:move;
+  background:transparent url(//baddth.com/jld/images/handle.png) no-repeat center;
+  width:15px;
+  height:35px;
+  position:absolute;
+  top:0;
+  right:0
 }
 
 #lander_tabs {
@@ -57,7 +52,6 @@
 }
 
 #lander_widget form {
-  width: 80%;
   margin: auto auto;
 }
 
@@ -66,7 +60,7 @@
 }
 
 .round {
-  -webkit-border-radius: 10px;
+  -webkit-border-radius: 5px;
 }
 
 #active_positions table, #closed_positions table {
@@ -150,5 +144,106 @@
 #tabs-min .ui-state-active a {
 	color: #3BAAE3; /*This color obviously changes with the jQuery UI CSS*/
 }
-
-
+#jobs, #tasks, #jobsPlus, #tasksPlus {
+  font-size:12px;
+}
+.widget_wrapper {
+  padding:5px;
+  background:#fff;
+}
+#lander_widget {
+  font-size: 0.8em;
+  /*background-color: #3BAAE3; This color obviously changes with the jQuery UI CSS*/
+  z-index: 5;
+  position: fixed;
+  top: 100px;
+  width:420px;
+} 
+ul .ui-state-active, ul .ui-widget-content .ui-state-active, ul .ui-widget-header .ui-state-active {
+  border-bottom: 0 !important;
+  -moz-border-radius-bottomright: 0px;
+  -webkit-border-bottom-right-radius: 0px;
+  -khtml-border-bottom-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  -moz-border-radius-bottomleft: 0px;
+  -webkit-border-bottom-left-radius: 0px;
+  -khtml-border-bottom-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+#tasks .taskDg, .positions .posDg {
+  display:inline-block;
+  margin-right:10px;
+}
+.positions .posDg {
+  opacity:0.5;
+}
+.positions .posDg:hover {
+  opacity:1;
+}
+.task:hover, .pos:hover {
+  background:#fff;
+}
+.task, .pos {
+  border-bottom:1px solid #ccc;
+  padding:5px;
+  margin:5px 0;
+  background:#f7fcff;
+  cursor:pointer;
+}
+.notify {
+  background:#e90000;
+  color:#fff;
+  padding:3px 5px;
+  font-size:10px;
+  font-weight:bold;
+  position:absolute;
+  top:-10px;
+  right:-10px;
+  text-align:center;
+}
+.ui-widget .processBtn {
+  font-size:12px;
+  height:90px;
+  width:80px;
+  float:left;
+  margin:0 1px;
+  border:0;
+  -moz-border-radius-bottomleft:6px;
+  -webkit-border-bottom-left-radius:6px;
+  -khtml-border-bottom-left-radius:6px;
+  border-bottom-left-radius:6px;
+  -moz-border-radius-bottomright:6px;
+  -webkit-border-bottom-right-radius:6px;
+  -khtml-border-bottom-right-radius:6px;
+  border-bottom-right-radius:6px;
+}
+.ui-widget .processBtn a {
+  white-space:normal;
+  text-align:center;
+  color:#fff;
+  height:80px;
+}
+#processBox {
+  background:#E2F3FF;
+  padding:10px 0;
+}
+a {
+  text-decoration:none;
+}
+.posBoxCount {
+  background:#fff;
+  padding:5px 10px;
+  border:1px solid #ccc;
+  color:#000;
+  position:absolute;
+  bottom:5px;
+  left:50%;
+  width:35px;
+  margin-left:-27px;
+  text-align:center;
+}
+#processTabs h3 {
+  padding:0 1.4em;
+  color:#999;
+  text-align:center;
+}
