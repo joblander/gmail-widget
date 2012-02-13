@@ -1,0 +1,1 @@
+CSS images need to be hosted and access through a domain name.
