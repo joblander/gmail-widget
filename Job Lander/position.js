@@ -45,7 +45,7 @@ jld.pos.taskBodyInnerHTML =
 		'<h3 style="margin-left:1.4em;margin-top:0">' +
 			'<a href="#" title="Change Search" onclick="return false">' +
 				'Product Manager, San Francisco' +
-				'<div class="round ui-state-default" style="display:inline-block;vertical-align:bottom;cursor:pointer">' +
+				'<div class="round ui-state-default" style="display:inline-block;vertical-align:bottom;cursor:pointer;margin-left:5px">' +
 					'<span class="ui-icon ui-icon-wrench" style="padding:1px"></span>' +
 				'</div>' +
 			'</a>' +
@@ -78,12 +78,12 @@ jld.pos.taskBodyInnerHTML =
 // innerHTML of a content inside create a new position tab.
 jld.pos.plusBodyInnerHTML =
 	'<h3 style="margin-top:0">Create a New Position</h3>' +
-	'<input id="new_position_name" type="text" placeholder="Position Name"/>' +
-	'<textarea id="new_position_description" placeholder="Description"></textarea>' +
-	'<input id="new_position_company" type="text" placeholder="Company"/>' +
-	'<textarea id="new_position_comments" placeholder="Comments"></textarea>' +
-	'<input id="new_position_app_link" type="text" placeholder="Link to Application"/>' +
-	'<input id="new_position_app_due_date" type="text" class="lander_datepicker" placeholder="Application Due Date"/>' +
+	'<div><input id="new_position_name" type="text" placeholder="Position Name"/></div>' +
+	'<div><textarea id="new_position_description" placeholder="Description"></textarea></div>' +
+	'<div><input id="new_position_company" type="text" placeholder="Company"/></div>' +
+	'<div><textarea id="new_position_comments" placeholder="Comments"></textarea></div>' +
+	'<div><input id="new_position_app_link" type="text" placeholder="Link to Application"/></div>' +
+	'<div><input id="new_position_app_due_date" type="text" class="lander_datepicker" placeholder="Application Due Date"/></div>' +
 	'<span class="actions">' +
 		'<input style="margin-top:15px" id="newPosBtn" type="button" value="Create a New Position">' +
 	'</span>';
