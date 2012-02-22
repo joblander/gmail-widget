@@ -1,4 +1,4 @@
-#lander_handle {
+.jld #lander_handle {
   cursor:move;
   background:transparent url(//baddth.com/jld/images/handle.png) no-repeat center;
   width:15px;
@@ -8,158 +8,34 @@
   right:0
 }
 
-#lander_tabs {
-  float: left;
-  box-shadow: 3px 3px 9px #888888;
-}
-
-#closed_expanded, #active_positions, #closed_positions {
-  background-color: #EEEEEE;
-  border: 1px solid #C0C0C0;
-  padding: 3px;
-  margin-bottom: 5px;
-}
-
-#active_positions {
-  float: left;
-  width: 78%;
-}
-
-#closed_positions {
-  margin-left: 81%;
-  height: 100%;
-}
-
-.lander_tab_header, .lander_tab_content {
-  margin-bottom: 1em;
-}
-
-.lander_tab_footer {
-  color: gray;
-  margin: auto -1.4em;   /* The size of this margin depends on the size of the padding for .ui-tabs-panel in the jQuery UI CSS file */
-  margin-top: 1em;
-  border-top: 1px solid #C0C0C0; 
-  /* Since this border line would most likely always be the same as the border value for #active_positions and #closed_positions,
-   * perhaps I could simply include ".lander_tab_footer" in that list and then make a rule after that for only .lander_tab_footer 
-   * which has "border-bottom: none; border-left: none; border-right: none;".
-   */
-  text-align: center;
-}
-
-#lander_widget input, #lander_widget textarea {
+.jld #lander_widget input, .jld #lander_widget textarea {
   width: 100%;
+  padding:4px;
   margin: 0.25em auto;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  white-space:normal;
 }
 
-#lander_widget form {
-  margin: auto auto;
-}
-
-.clearboth {
-  clear: both;
-}
-
-.round {
+.jld .round {
   -webkit-border-radius: 5px;
 }
 
-#active_positions table, #closed_positions table {
-  width: 100%;
-}
-#active_positions th, #closed_positions th {
-  font-weight: normal;
-  font-size: 0.8em;
-}
-#active_positions td, #closed_positions td  {
-  text-align: center;
-  font-size: 1em;
-}
-
-#active_table td:hover {
-  font-weight: bold;
-}
-
-.lander_button {
-  display: inline;
-  padding: 0.5em;
-  background-color: #EEEEEE;
-  border: 1px solid #C0C0C0;
-}
-
-.lander_button:hover {
-  background-color: #AED0EA; /*This color obviously changes with the jQuery UI CSS*/
-}
-
-.closed_item_header  {    
-  padding: 0.5em;
-  background-color: #EEEEEE;
-  border: 1px dashed #C0C0C0;
-}
-
-.closed_item_description  {    
-  padding: 0.5em;
-  background-color: #EEEEEE;
-  border: 1px solid #C0C0C0;
-}
-
-.closed_item  {    
-  margin-bottom: 0.5em;
-}
-
-#closed_positions:hover, .closed_item_header:hover {
-  background-color: #AED0EA; /*This color obviously changes with the jQuery UI CSS*/
-}
-
-/*
-.expanded_closed_item  .closed_item_header {
-  font-weight:bold;
-}
-*/
-
-/* Thanks to http://keith-wood.name/uiTabs.html for the following on how to style jquery for minimalist styling */
-
-#tabs-min {
-	background: transparent;
-	border: none;
-}
-#tabs-min .ui-widget-header {
-	background: transparent;
-	border: none;
-	border-bottom: 1px solid #c0c0c0;
-	border-radius: 0px;
-	-moz-border-radius: 0px;
-	-webkit-border-radius: 0px;
-}
-#tabs-min .ui-state-default {
-	background: transparent;
-	border: none;
-}
-#tabs-min .ui-state-active {
-	background: transparent url(img/uiTabsArrow.png) no-repeat bottom center;
-	border: none;
-}
-#tabs-min .ui-state-default a {
-	color: #c0c0c0;
-}
-#tabs-min .ui-state-active a {
-	color: #3BAAE3; /*This color obviously changes with the jQuery UI CSS*/
-}
-#jobs, #tasks, #jobsPlus, #tasksPlus {
+.jld #jobs, .jld #tasks, .jld #jobsPlus, .jld #tasksPlus {
   font-size:12px;
 }
-.widget_wrapper {
+.jld .widget_wrapper {
   padding:5px;
   background:#fff;
 }
-#lander_widget {
+.jld #lander_widget {
   font-size: 0.8em;
-  /*background-color: #3BAAE3; This color obviously changes with the jQuery UI CSS*/
   z-index: 5;
-  position: fixed;
-  top: 100px;
-  width:420px;
+  width:430px;
 } 
-ul .ui-state-active, ul .ui-widget-content .ui-state-active, ul .ui-widget-header .ui-state-active {
+.jld ul .ui-state-active, .jld ul .ui-widget-content .ui-state-active, .jld ul .ui-widget-header .ui-state-active {
   border-bottom: 0 !important;
   -moz-border-radius-bottomright: 0px;
   -webkit-border-bottom-right-radius: 0px;
@@ -170,27 +46,27 @@ ul .ui-state-active, ul .ui-widget-content .ui-state-active, ul .ui-widget-heade
   -khtml-border-bottom-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
-#tasks .taskDg, .positions .posDg {
+.jld #tasks .taskDg, .jld .positions .posDg {
   display:inline-block;
   margin-right:10px;
 }
-.positions .posDg {
+.jld .positions .posDg {
   opacity:0.5;
 }
-.positions .posDg:hover {
+.jld .positions .posDg:hover {
   opacity:1;
 }
-.task:hover, .pos:hover {
+.jld .task:hover, .jld .pos:hover {
   background:#fff;
 }
-.task, .pos {
+.jld .task, .jld .pos {
   border-bottom:1px solid #ccc;
   padding:5px;
   margin:5px 0;
   background:#f7fcff;
   cursor:pointer;
 }
-.notify {
+.jld .notify {
   background:#e90000;
   color:#fff;
   padding:3px 5px;
@@ -200,8 +76,9 @@ ul .ui-state-active, ul .ui-widget-content .ui-state-active, ul .ui-widget-heade
   top:-10px;
   right:-10px;
   text-align:center;
+  z-index:1005;
 }
-.ui-widget .processBtn {
+.jld .ui-widget .processBtn {
   font-size:12px;
   height:90px;
   width:80px;
@@ -217,20 +94,20 @@ ul .ui-state-active, ul .ui-widget-content .ui-state-active, ul .ui-widget-heade
   -khtml-border-bottom-right-radius:6px;
   border-bottom-right-radius:6px;
 }
-.ui-widget .processBtn a {
+.jld .ui-widget .processBtn a {
   white-space:normal;
   text-align:center;
   color:#fff;
   height:80px;
 }
-#processBox {
+.jld #processBox {
   background:#E2F3FF;
   padding:10px 0;
 }
-a {
+.jld a {
   text-decoration:none;
 }
-.posBoxCount {
+.jld .posBoxCount {
   background:#fff;
   padding:5px 10px;
   border:1px solid #ccc;
@@ -242,8 +119,11 @@ a {
   margin-left:-27px;
   text-align:center;
 }
-#processTabs h3 {
+.jld #processTabs h3 {
   padding:0 1.4em;
   color:#999;
   text-align:center;
+}
+.jld .actions input {
+  padding:5px;
 }

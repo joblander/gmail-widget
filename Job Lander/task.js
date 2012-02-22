@@ -22,7 +22,7 @@ jld.task.taskBodyInnerHTML =
 jld.task.plusBodyInnerHTML =
 	'<h3 style="margin-top:0">Create a New Task</h3>' +
 	'<input type="text" placeholder="Task Name"/>' +
-	'<textarea placeholder="Description"/></textarea>' +
+	'<textarea placeholder="Description"></textarea>' +
 	'<input type="text" class="lander_datepicker" placeholder="Due Date"/>' +
 	'<span class="actions">' +
 		'<input style="margin-top:15px" id="newTaskBtn" type="submit" value="Create a New Task">' +

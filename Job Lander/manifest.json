@@ -5,10 +5,10 @@
   "permissions": [ "http://mail.google.com/", "https://mail.google.com/", "http://*/" ],
   "content_scripts": [
     {
-      "all_frames": false,
+      "all_frames": true,
       "matches": [ "http://mail.google.com/*", "https://mail.google.com/*" ],
       "css": ["css/style.css", "css/cupertino/jquery-ui-1.8.17.custom.css"],
-      "js": ["lib/jquery-1.4.2.js", "lib/jquery-ui-1.8.16.js", "position.js", "task.js", "main.js"],
+      "js": ["lib/jquery-1.4.2.js", "lib/jquery-ui-1.8.16.js", "position.js", "task.js", "inmailWidget.js", "main.js"],
       "run_at": "document_idle"
     }
   ]
