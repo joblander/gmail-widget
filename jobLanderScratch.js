@@ -28,6 +28,10 @@
 //Does the widget load when the page is offscreen or another tab has focus? Sometimes it seems not to.
 //At some point I may go back and remove unnecessary jQuery
 //Find way to put the widget's html in an html file so I don' thave to put it in a string in javascript (which is cumbersome).
+
+/* After Brad Refactored: */
+// Datepicker fixed
+// Maybe Try using most up-to-date jquery now
       "       <div>"+
       "         <table>"+
       "           <tr>"+

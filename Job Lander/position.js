@@ -91,6 +91,7 @@ jld.pos.plusBodyInnerHTML =
 // A function to run in the beginning of main.
 jld.pos.init = function() {
 	// TODO: Load user's positions from the server and initize tabBodyInnerHTML.
+  jld.pos.getAllPositions();
 }
 
 // A function to run after all elements are put into the widget.
@@ -102,11 +103,7 @@ jld.pos.render = function() {
 	});
 	$("#newPosBtn,.posBox").button();
 	$("#newPosBtn").click(jld.pos.createNewPosition);
-
-	// TODO(baddth): Check with Trenton about this.
-    //TODO: Make .lander_datepicker class elements pop out a datepicker. Not sure why the following code doesn't work:
-    //$(".lander_datepicker", frame).datepicker();
-    //That code doesn't work if left right there. If, instead, I run that statement in the Console after the page is up, it does work.
+  $(".lander_datepicker").datepicker();
     //$(".ui-tabs .ui-tabs-panel", frame).css({'padding-bottom':'0em'});
 
 	// TODO(baddth): Add Close Position back into UI.
@@ -140,5 +137,15 @@ jld.pos.createNewPosition = function(){
 		data:JSON.stringify(position),
 		contentType:"application/json"
 	});
+	return false;
+};
+
+// This function is called to get all positions button is hit.
+jld.pos.getAllPositions = function(){
+	var positions = {};
+	$.get("http://joblander.herokuapp.com/users/1/positions.json", function(data) {
+    window.result = JSON.parse(data, function);
+    alert("done");
+  });
 	return false;
 };
