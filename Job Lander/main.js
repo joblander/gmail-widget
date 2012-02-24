@@ -5,7 +5,7 @@
   floatWidgetInnerHTML =
 	'<div class="jld">' +
 		'<div id="lander_widget" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="position:fixed;top:74px;right:100px">' +
-			'<ul style="border:0;padding:0;position:relative">' +
+			'<ul class="lander_menu" style="border:0;padding:0;position:relative">' +
 				jld.pos.tabButtonsInnerHTML +
 				jld.task.tabButtonsInnerHTML +
 				'<div id="lander_handle"></div>' +
