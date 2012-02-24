@@ -33,7 +33,7 @@
 .jld #lander_widget {
   font-size: 0.8em;
   z-index: 5;
-  width:430px;
+  width:650px;
 } 
 .jld ul .ui-state-active, .jld ul .ui-widget-content .ui-state-active, .jld ul .ui-widget-header .ui-state-active {
   border-bottom: 0 !important;
@@ -46,9 +46,26 @@
   -khtml-border-bottom-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
-.jld #tasks .taskDg, .jld .positions .posDg {
+.jld #tasks .taskDg, .jld .positions .posDg, .jld .positions .posIcon {
   display:inline-block;
   margin-right:10px;
+}
+.jld .positions .posDg {
+  cursor:pointer;
+}
+.jld .positions .posTitle {
+  display:inline-block;
+}
+.jld .positions .posDetail {
+  background:#fff;
+  padding:15px;
+  cursor:default;
+}
+.jld .positions .posMail, .jld .positions .posTask {
+  padding:5px;
+  border: 1px solid #ccc;
+  margin: 10px 0;
+  width:400px;
 }
 .jld .positions .posDg {
   opacity:0.5;
@@ -72,16 +89,13 @@
   padding:3px 5px;
   font-size:10px;
   font-weight:bold;
-  position:absolute;
-  top:-10px;
-  right:-10px;
   text-align:center;
-  z-index:1005;
+  margin-left:5px;
 }
-.jld .ui-widget .processBtn {
+.jld .ui-widget .stepBtn {
   font-size:12px;
-  height:90px;
-  width:80px;
+  height:100px;
+  width:100px;
   float:left;
   margin:0 1px;
   border:0;
@@ -94,13 +108,16 @@
   -khtml-border-bottom-right-radius:6px;
   border-bottom-right-radius:6px;
 }
-.jld .ui-widget .processBtn a {
+.jld .stepBtn a, .jld .ui-tabs .ui-tabs-nav .stepBtn a {
+  font-size:13px;
   white-space:normal;
   text-align:center;
   color:#fff;
   height:80px;
+  float:none;
+  display:block
 }
-.jld #processBox {
+.jld #stepBox {
   background:#E2F3FF;
   padding:10px 0;
 }
@@ -119,11 +136,24 @@
   margin-left:-27px;
   text-align:center;
 }
-.jld #processTabs h3 {
+.jld #stepTabs h3 {
   padding:0 1.4em;
   color:#999;
   text-align:center;
 }
 .jld .actions input {
   padding:5px;
+}
+.jld .ui-widget-content .posMail a, .jld .ui-widget-content .posTask a {
+  color:blue;
+  text-decoration:underline;
+}
+.jld .pos .posDetail {
+  display:none;
+}
+.jld .posExpand .posDetail {
+  display:block;
+}
+.posExpand .posTitle {
+  font-weight:bold;
 }

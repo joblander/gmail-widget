@@ -73,15 +73,17 @@
 {
 	border: 1px solid #2694e8; background: #3986c0; font-weight: bold; color: #ffffff;
 }
+
+/* Action button. This will have darker than normal button to attract users focus */
 .jld .actions .ui-state-default, .jld .actions .ui-widget-content .ui-state-default, .jld .actions .ui-widget-header .ui-state-default { background: #3986c0 url(//baddth.com/jld/css/cupertino/images/ui-bg_glass_50_3baae3_1x400.png) 50% 50% repeat-x; font-weight: bold; color: #ffffff; }
 .jld .actions .ui-state-hover, .jld .actions .ui-widget-content .ui-state-hover, .jld .actions .ui-widget-header .ui-state-hover,
     .actions .ui-state-active, .jld .actions .ui-widget-content .ui-state-active, .jld .actions .ui-widget-header .ui-state-active {
     background: #3986c0 url(//baddth.com/jld/css/cupertino/images/ui-bg_glass_50_3baae3_1x400_hover.png) 50% 50% repeat-x; font-weight: bold; color: #ffffff; }
 .jld .actions .ui-state-hover { background: #3986c0 url(//baddth.com/jld/css/cupertino/images/ui-bg_glass_50_3baae3_1x400_hover.png) 50% 50% repeat-x; }
 
-#processTabs .actions .ui-state-default, #processTabs .actions .ui-widget-content .ui-state-default, #processTabs .actions .ui-widget-header .ui-state-default { background: #3986c0 url(//baddth.com/jld/css/cupertino/images/ui-bg_glass_50_3baae3_1x400.png) 50% 66% repeat-x; font-weight: bold; color: #ffffff; }
-#processTabs .actions .ui-state-hover, #processTabs .actions .ui-widget-content .ui-state-hover, #processTabs .actions .ui-widget-header .ui-state-hover,
-    #processTabs .actions .ui-state-active, #processTabs .actions .ui-widget-content #processTabs .ui-state-active, #processTabs .actions .ui-widget-header .ui-state-active {
+#stepTabs .actions .ui-state-default, #stepTabs .actions .ui-widget-content .ui-state-default, #stepTabs .actions .ui-widget-header .ui-state-default { background: #3986c0 url(//baddth.com/jld/css/cupertino/images/ui-bg_glass_50_3baae3_1x400.png) 50% 66% repeat-x; font-weight: bold; color: #ffffff; }
+#stepTabs .actions .ui-state-hover, #stepTabs .actions .ui-widget-content .ui-state-hover, #stepTabs .actions .ui-widget-header .ui-state-hover,
+    #stepTabs .actions .ui-state-active, #stepTabs .actions .ui-widget-content #stepTabs .ui-state-active, #stepTabs .actions .ui-widget-header .ui-state-active {
     background: #3986c0 url(//baddth.com/jld/css/cupertino/images/ui-bg_glass_50_3baae3_1x400_hover.png) 50% 66% repeat-x; font-weight: bold; color: #ffffff; }
 /*-----------------------*/
 .jld .ui-state-active a, .jld .ui-state-active a:link, .jld .ui-state-active a:visited { color: #ffffff; text-decoration: none; }
@@ -501,6 +503,10 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .jld .ui-tabs .ui-tabs-nav li a, .jld .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
 .jld .ui-tabs .ui-tabs-panel { display: block; border-width: 0; padding: 1em 1.4em; background: none; }
 .jld .ui-tabs .ui-tabs-hide { display: none !important; }
+/* override the lander menu style */
+/*.jld .ui-tabs .lander_menu li {
+  padding-right:20px;
+}*/
 /*
  * jQuery UI Datepicker 1.8.17
  *
