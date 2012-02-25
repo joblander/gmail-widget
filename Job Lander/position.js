@@ -8,12 +8,11 @@ jld.pos.getDummyPosition = function(id){
 	position.id = id;
 	position.name = 'Dummy Position - Click me for more info';
 	position.pstatus = "to_apply";
-	position.details = {};
-	position.details.description = "Here is a description for a dummy position";
-	position.details.company = "Test Company";
-	position.details.comments = "Here is where comments go";
-	position.details.app_link = "http://www.google.com";
-	position.details.app_due_date = "2011/01/01";
+	position.details = "Here is a description for a dummy position";
+	position.company = "Test Company";
+	position.comments = "Here is where comments go";
+	position.app_link = "http://www.google.com";
+	position.app_due_date = "2011/01/01";
 	return position;
 };
 
@@ -186,12 +185,11 @@ jld.pos.plusBodyInnerHTML = jld.pos.plusBodyInnerHTML.join("");
 jld.pos.createNewPosition = function(){
 	var position = {};
 	position.name = $("#new_position_name").val();
-	position.details = {};
-	position.details.description = $("#new_position_description").val();
-	position.details.company = $("#new_position_company").val();
-	position.details.comments = $("#new_position_comments").val();
-	position.details.app_link = $("#new_position_app_link").val();
-	position.details.app_due_date = $("#new_position_app_due_date").val();
+	position.details = $("#new_position_description").val();
+	position.company = $("#new_position_company").val();
+	position.comments = $("#new_position_comments").val();
+	position.app_link = $("#new_position_app_link").val();
+	position.app_due_date = $("#new_position_app_due_date").val();
 	$.ajax({
 		url:"http://joblander.herokuapp.com/users/1/positions.json",
 		type:"POST",
