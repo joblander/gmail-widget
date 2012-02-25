@@ -11,7 +11,7 @@
 				'<div id="lander_handle"></div>' +
 			'</ul>' +
 			'<div id="tabs-1" style="padding-left:0;padding-right:0">' +
-				jld.pos.taskBodyInnerHTML +
+				jld.pos.posBodyInnerHTML +
 			'</div>' +
 			'<div id="tabs-2">' +
 				jld.pos.plusBodyInnerHTML +

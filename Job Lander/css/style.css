@@ -59,7 +59,6 @@
 .jld .positions .posDetail {
   background:#fff;
   padding:15px;
-  cursor:default;
 }
 .jld .positions .posMail, .jld .positions .posTask {
   padding:5px;
@@ -81,7 +80,7 @@
   padding:5px;
   margin:5px 0;
   background:#f7fcff;
-  cursor:pointer;
+  position:relative;
 }
 .jld .notify {
   background:#e90000;
@@ -154,6 +153,36 @@
 .jld .posExpand .posDetail {
   display:block;
 }
-.posExpand .posTitle {
+.jld .posExpand .posTitle {
   font-weight:bold;
+}
+.jld .posMoveBtn {
+  position:absolute;
+  right:5px;
+  top:-5px;
+}
+.jld .posMoveBtn button {
+  width:100px;
+}
+.jld .posMoveExpanded {
+  display:none;
+  position:absolute;
+  z-index:1005;
+  width:200px;
+  background:white;
+  border:1px solid #ccc;
+  right:5px;
+  top:35px;
+  width:200px;
+  padding:5px;
+}
+.jld .posMoveExpanded button {
+  width:200px;
+  margin:0;
+}
+.jld .posTitle{
+  cursor:pointer;
+}
+.jld .posMoveBtn .ui-icon {
+  float:right;
 }
