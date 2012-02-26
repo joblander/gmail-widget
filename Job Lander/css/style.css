@@ -171,8 +171,8 @@
   width:200px;
   background:white;
   border:1px solid #ccc;
-  right:5px;
-  top:35px;
+  right:105px;
+  top:0px;
   width:200px;
   padding:5px;
 }
@@ -184,5 +184,5 @@
   cursor:pointer;
 }
 .jld .posMoveBtn .ui-icon {
-  float:right;
+  float:left;
 }
