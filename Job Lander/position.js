@@ -1,6 +1,8 @@
 /* Position Management related code goes here. */
 window.jld = window.jld || {};
 window.jld.pos = {};
+window.jld.pos.steps = ['','to_apply','applied','to_schedule','interviewed','offered','rejected','interested'];
+window.jld.pos.stepLabels = ['To Review','To Apply','Applied and Waiting','To Schedule','Interviewed and Waiting','Closed - got an offer','Closed - got rejected','Closed - not interested'];
 
 // Dummy data for testing
 jld.pos.getDummyPosition = function(id){
@@ -84,14 +86,11 @@ jld.pos.constructPosHTML = function(pos){
 			'<div class="posDg"><span class="ui-icon ui-icon-star"></span></div>',
 			'<div class="posTitle">', pos.name,'</div>',
 			'<div class="posMoveBtn"><button>Move <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-w"></span></button>',
-				'<div class="posMoveExpanded">',
-					'<button style="margin:2px 0">To Apply</button>',
-					'<button style="margin:2px 0">Applied and Waiting</button>',
-					'<button style="margin:2px 0">To Schedule</button>',
-					'<button style="margin:2px 0">Interviewed and Waiting</button>',
-					'<button style="margin:2px 0">Closed - got an offer</button>',
-					'<button style="margin:2px 0">Closed - got rejected</button>',
-					'<button style="margin:2px 0">Closed - not interested</button>',
+				'<div class="posMoveExpanded">');
+    for (var i = 0; i < jld.pos.stepLabels.length; i++) {
+        html.push('<button style="margin:2px 0" pstatus="', jld.pos.steps[i] ,'">', jld.pos.stepLabels[i], '</button>');
+    }
+    html.push(
 				'</div>',
 			'</div>',
 			'<div class="posDetail">',
@@ -203,7 +202,24 @@ jld.pos.createNewPosition = function(){
 	return false;
 };
 
+jld.pos.movePosition = function(posElement, newStatus) {
+    var pid = posElement.attr('pid');
+    // TODO(baddth): Add error handler.
+    $.ajax({
+           url:'http://joblander.herokuapp.com/users/1/positions/' + pid + '.json',
+           type:'put',
+           data:JSON.stringify({'pstatus':newStatus}),
+           contentType:"application/json",
+           statusCode: {
+            304: function() {
+            }
+           }
+    });
+};
+
+// A function to download positon list from server.
 jld.pos.getServerPositions = function(callback) {
+    // TODO(baddth): Add error handler.
 	$.get(
 		"http://joblander.herokuapp.com/users/1/positions.json",
 		function(data) {
@@ -225,13 +241,16 @@ jld.pos.init = function() {
 
 // A function to run after all elements are put into the widget.
 jld.pos.render = function() {
+    // Render Steps as tab buttons
 	$('.jld #stepTabs').tabs({
 		selected: -1,
 		collapsible: true,
 		fx: [{ opacity: 'toggle', duration: 'fast' },{ height: 'toggle', duration: 'fast' }]
 	});
 	$(".jld #newPosBtn,.jld .posBox").button();
+    // Click event for Create a new Position button
 	$(".jld #newPosBtn").click(jld.pos.createNewPosition);
+    // Toggle Positon description expansion
 	$(".jld .posTitle").click(function(){
 		var parent = $(this).parent();
 		if (!parent.hasClass("posExpand")){
@@ -240,15 +259,25 @@ jld.pos.render = function() {
 			parent.removeClass("posExpand");
 		}
 	});
+    // Render the Move button inside Position
 	$(".jld .posMoveBtn button").button();
+    // Mouseover event of the Move button inside Position
 	$(".jld .posMoveBtn").mouseover(function(){
-		var pid = $(this).parent().attr('pid');
+		var pid = $(this).parent('.pos').attr('pid');
 		var element = $(".jld #pos" + pid + " .posMoveExpanded");
 		element.css('display', 'block');
 	});
+    // Mouseout event of the Move button inside Position
 	$(".jld .posMoveBtn").mouseout(function(){
 		console.log('mouseout');
-		var pid = $(this).parent().attr('pid');
+		var pid = $(this).parent('.pos').attr('pid');
 		$(".jld #pos" + pid + " .posMoveExpanded").css('display', 'none');
 	});
+    $(".jld .posMoveExpanded button").click(function() {
+        var pos = $(this).parents('.pos');
+        console.log(pos);
+        console.log(pos.attr('pstatus'));
+        var pstatus = $(this).attr('pstatus');
+        jld.pos.movePosition(pos, pstatus);
+    });
 };
