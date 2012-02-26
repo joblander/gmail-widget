@@ -25,62 +25,65 @@ jld.pos.getDummyList = function() {
 	return res;
 };
 
-var posList = {};
-posList['to_apply'] = jQuery.grep(jld.pos.getDummyList(), function(pos) { return pos.pstatus === "to_apply";});
-
 // innerHTML for tab buttons.
 // TODO(baddth): Replace image url properly.
-jld.pos.tabButtonsInnerHTML =
-	'<li class="ui-corner-all"><a href="#tabs-1">Positions<span class="notify round">10</span></a></li>' +
-	'<li style="border:0"><a href="#tabs-2" style="padding:0"><img src="//baddth.com/jld/images/plus-icon.png" style="vertical-align:middle"></a></li>';
+jld.pos.tabButtonsInnerHTML = [];
+jld.pos.tabButtonsInnerHTML.push(
+	'<li class="ui-corner-all"><a href="#tabs-1">Positions<span class="notify round">10</span></a></li>',
+	'<li style="border:0"><a href="#tabs-2" style="padding:0"><img src="//baddth.com/jld/images/plus-icon.png" style="vertical-align:middle"></a></li>'
+);
+jld.pos.tabButtonsInnerHTML = jld.pos.tabButtonsInnerHTML.join("");
 
 // innerHTML of a content inside Process Box (To Review, To Apply, ..., etc).
-jld.pos.stepBoxInnerHTML = [];
-jld.pos.stepBoxInnerHTML.push(
-		'<b style="margin-left:208px">Active Positions</b>',
-		'<ul style="background:none;border:0">',
-		'<li class="stepBtn ui-state-default round">',
-			'<a href="#stepTab-1">To Review',
-				'<div class="posBoxCount round">0</div>',
-			'</a>',
-		'</li>',
-		'<li class="stepBtn ui-state-default">',
-			'<a href="#stepTab-2">To Apply',
-				'<div class="posBoxCount round">', posList['to_apply'].length,'</div>',
-			'</a>',
-		'</li>',
-		'<li class="stepBtn ui-state-default">',
-			'<a href="#stepTab-3">Applied and Waiting',
-				'<div class="posBoxCount round">0</div>',
-			'</a>',
-		'</li>',
-		'<li class="stepBtn ui-state-default">',
-			'<a href="#stepTab-4">To Schedule',
-				'<div class="posBoxCount round">0</div>',
-			'</a>',
-		'</li>',
-		'<li class="stepBtn ui-state-default" style="font-size:10px">',
-			'<a href="#stepTab-5">Interviewed and Waiting',
-				'<div class="posBoxCount round">0</div>',
-			'</a>',
-		'</li>',
-		'<li class="stepBtn ui-state-default" style="font-size:10px;margin-left:10px">',
-			'<a href="#stepTab-6">Closed',
-				'<div class="posBoxCount round">0</div>',
-			'</a>',
-		'</li>',
-		'</ul>',
-		'<div style="clear:both"></div>');
-jld.pos.stepBoxInnerHTML = jld.pos.stepBoxInnerHTML.join("");
+jld.pos.constructStepBoxInnerHTML = function(posList) {
+	var html = [];
+	html.push(
+			'<b style="margin-left:208px">Active Positions</b>',
+			'<ul style="background:none;border:0">',
+			'<li class="stepBtn ui-state-default round">',
+				'<a href="#stepTab-1">To Review',
+					'<div class="posBoxCount round">0</div>',
+				'</a>',
+			'</li>',
+			'<li class="stepBtn ui-state-default">',
+				'<a href="#stepTab-2">To Apply',
+					'<div class="posBoxCount round">', posList['to_apply'].length,'</div>',
+				'</a>',
+			'</li>',
+			'<li class="stepBtn ui-state-default">',
+				'<a href="#stepTab-3">Applied and Waiting',
+					'<div class="posBoxCount round">0</div>',
+				'</a>',
+			'</li>',
+			'<li class="stepBtn ui-state-default">',
+				'<a href="#stepTab-4">To Schedule',
+					'<div class="posBoxCount round">0</div>',
+				'</a>',
+			'</li>',
+			'<li class="stepBtn ui-state-default" style="font-size:10px">',
+				'<a href="#stepTab-5">Interviewed and Waiting',
+					'<div class="posBoxCount round">0</div>',
+				'</a>',
+			'</li>',
+			'<li class="stepBtn ui-state-default" style="font-size:10px;margin-left:10px">',
+				'<a href="#stepTab-6">Closed',
+					'<div class="posBoxCount round">0</div>',
+				'</a>',
+			'</li>',
+			'</ul>',
+			'<div style="clear:both"></div>');
+	return html.join("");
+};
+
 
 // A function to construct an innerHTML for a single post
 jld.pos.constructPosHTML = function(pos){
 	var html = [];
 	html.push(
-		'<div class="pos" id="pos' + pos.id + '" pid="' + pos.id + '">',
+		'<div class="pos" id="pos', pos.id,'" pid="', pos.id,'">',
 			'<div class="posDg"><span class="ui-icon ui-icon-star"></span></div>',
-			'<div class="posTitle">' + pos.name + '</div>',
-			'<div class="posMoveBtn"><button>Move <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span></button>',
+			'<div class="posTitle">', pos.name,'</div>',
+			'<div class="posMoveBtn"><button>Move <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-w"></span></button>',
 				'<div class="posMoveExpanded">',
 					'<button style="margin:2px 0">To Apply</button>',
 					'<button style="margin:2px 0">Applied and Waiting</button>',
@@ -92,7 +95,7 @@ jld.pos.constructPosHTML = function(pos){
 				'</div>',
 			'</div>',
 			'<div class="posDetail">',
-				'<div class="posDesc">' + pos.details.description + '</div>',
+				'<div class="posDesc">', pos.details, '</div>',
 				'<div class="posMail">',
 					'<div>Related Emails</div>',
 					'<div>',
@@ -117,54 +120,55 @@ jld.pos.constructPosHTML = function(pos){
 			'</div>',
 		'</div>');
 	return html.join('');
-}
+};
 
 // Construct an innerHTML for a group of positions
-jld.pos.constructPosListHTML = function(posList) {
+jld.pos.constructPosListHTML = function(positions) {
 	var html = ['<div class="positions">'];
-	for (var i = 0; i < posList.length; i++) {
-		html.push(jld.pos.constructPosHTML(posList[i]));
+	for (var i = 0; i < positions.length; i++) {
+		html.push(jld.pos.constructPosHTML(positions[i]));
 	}
 	html.push('</div>');
 	return html.join('');
-}
+};
 
 // innerHTML of a content inside Positions tab.
-// TODO: Use data from server to create this.
-jld.pos.posBodyInnerHTML = [];
-jld.pos.posBodyInnerHTML.push(
-		'<div id="stepTabs" style="border:0;margin:0;padding:0">',
-			'<div id="stepBox" class="actions">',
-				jld.pos.stepBoxInnerHTML,
-			'</div>',
-			'<div id="stepTab-1" style="padding:0">',
-				'<h3 style="text-align:left">',
-					'<a href="#" title="Change Search" onclick="return false">',
-						'Product Manager, San Francisco',
-						'<div class="round ui-state-default" style="display:inline-block;vertical-align:bottom;cursor:pointer;margin-left:5px">',
-							'<span class="ui-icon ui-icon-wrench" style="padding:1px"></span>',
-						'</div>',
-					'</a>',
-				'</h3>',
-			'</div>',
-			'<div id="stepTab-2" style="padding:0">',
-				'<h3>You have ', posList['to_apply'].length,' Positions listed as "To Apply"</h3>',
-				jld.pos.constructPosListHTML(posList['to_apply']),
-			'</div>',
-			'<div id="stepTab-3" style="padding:0">',
-				'<h3>You have 0 Positions listed as "Applied and Waiting"</h3>',
-			'</div>',
-			'<div id="stepTab-4" style="padding:0">',
-				'<h3>No Position listed as "To Schedule"</h3>',
-			'</div>',
-			'<div id="stepTab-5" style="padding:0">',
-				'<h3>No Position listed as "Interviewed and Waiting"</h3>',
-			'</div>',
-			'<div id="stepTab-6" style="padding:0">',
-				'<h3>Under Construction</h3>',
-			'</div>',
-		'</div>');
-jld.pos.posBodyInnerHTML = jld.pos.posBodyInnerHTML.join('');
+jld.pos.constructStepTabsInnerHTML = function(posList) {
+	var html = [];
+	html.push(
+			'<div id="stepTabs" style="border:0;margin:0;padding:0">',
+				'<div id="stepBox" class="actions">',
+					jld.pos.constructStepBoxInnerHTML(posList),
+				'</div>',
+				'<div id="stepTab-1" style="padding:0">',
+					'<h3 style="text-align:left">',
+						'<a href="#" title="Change Search" onclick="return false">',
+							'Product Manager, San Francisco',
+							'<div class="round ui-state-default" style="display:inline-block;vertical-align:bottom;cursor:pointer;margin-left:5px">',
+								'<span class="ui-icon ui-icon-wrench" style="padding:1px"></span>',
+							'</div>',
+						'</a>',
+					'</h3>',
+				'</div>',
+				'<div id="stepTab-2" style="padding:0">',
+					'<h3>You have ', posList['to_apply'].length,' Positions listed as "To Apply"</h3>',
+					jld.pos.constructPosListHTML(posList['to_apply']),
+				'</div>',
+				'<div id="stepTab-3" style="padding:0">',
+					'<h3>You have 0 Positions listed as "Applied and Waiting"</h3>',
+				'</div>',
+				'<div id="stepTab-4" style="padding:0">',
+					'<h3>No Position listed as "To Schedule"</h3>',
+				'</div>',
+				'<div id="stepTab-5" style="padding:0">',
+					'<h3>No Position listed as "Interviewed and Waiting"</h3>',
+				'</div>',
+				'<div id="stepTab-6" style="padding:0">',
+					'<h3>Under Construction</h3>',
+				'</div>',
+			'</div>');
+	return html.join('');
+};
 
 // innerHTML of a content inside create a new position tab.
 jld.pos.plusBodyInnerHTML = [];
@@ -184,12 +188,12 @@ jld.pos.plusBodyInnerHTML = jld.pos.plusBodyInnerHTML.join("");
 // This function is called when a 'Create a New Position' button is hit.
 jld.pos.createNewPosition = function(){
 	var position = {};
-	position.name = $("#new_position_name").val();
-	position.details = $("#new_position_description").val();
-	position.company = $("#new_position_company").val();
-	position.comments = $("#new_position_comments").val();
-	position.app_link = $("#new_position_app_link").val();
-	position.app_due_date = $("#new_position_app_due_date").val();
+	position.name = $(".jld #new_position_name").val();
+	position.details = $(".jld #new_position_description").val();
+	position.company = $(".jld #new_position_company").val();
+	position.comments = $(".jld #new_position_comments").val();
+	position.app_link = $(".jld #new_position_app_link").val();
+	position.app_due_date = $(".jld #new_position_app_due_date").val();
 	$.ajax({
 		url:"http://joblander.herokuapp.com/users/1/positions.json",
 		type:"POST",
@@ -199,21 +203,37 @@ jld.pos.createNewPosition = function(){
 	return false;
 };
 
+jld.pos.getServerPositions = function(callback) {
+	$.get(
+		"http://joblander.herokuapp.com/users/1/positions.json",
+		function(data) {
+			callback(data);
+		}
+	);
+}
+
 // A function to run in the beginning of main.
 jld.pos.init = function() {
-	// TODO: Load user's positions from the server and initize tabBodyInnerHTML.
-}
+	jld.pos.getServerPositions(function(data) {
+		var posList = {};
+		posList['to_apply'] = jQuery.grep(data, function(pos) { return pos.pstatus === "to_apply";});
+		var body = jld.pos.constructStepTabsInnerHTML(posList);
+		console.log(body);
+		$(".jld #tabs-1").html(body);
+		jld.pos.render();
+	});
+};
 
 // A function to run after all elements are put into the widget.
 jld.pos.render = function() {
-	$('#stepTabs').tabs({
+	$('.jld #stepTabs').tabs({
 		selected: -1,
 		collapsible: true,
 		fx: [{ opacity: 'toggle', duration: 'fast' },{ height: 'toggle', duration: 'fast' }]
 	});
-	$("#newPosBtn,.posBox").button();
-	$("#newPosBtn").click(jld.pos.createNewPosition);
-	$(".posTitle").click(function(){
+	$(".jld #newPosBtn,.jld .posBox").button();
+	$(".jld #newPosBtn").click(jld.pos.createNewPosition);
+	$(".jld .posTitle").click(function(){
 		var parent = $(this).parent();
 		if (!parent.hasClass("posExpand")){
 			parent.addClass("posExpand");
@@ -221,13 +241,13 @@ jld.pos.render = function() {
 			parent.removeClass("posExpand");
 		}
 	});
-	$(".posMoveBtn button").button();
-	$(".posMoveBtn").mouseover(function(){
+	$(".jld .posMoveBtn button").button();
+	$(".jld .posMoveBtn").mouseover(function(){
 		var pid = $(this).parent().attr('pid');
-		$("#pos" + pid + " .posMoveExpanded").css('display', 'block');
+		$(".jld #pos" + pid + " .posMoveExpanded").css('display', 'block');
 	});
-	$(".posMoveBtn").mouseout(function(){
+	$(".jld .posMoveBtn").mouseout(function(){
 		var pid = $(this).parent().attr('pid');
-		$("#pos" + pid + " .posMoveExpanded").css('display', 'none');
+		$(".jld #pos" + pid + " .posMoveExpanded").css('display', 'none');
 	});
-}
+};

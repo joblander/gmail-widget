@@ -11,7 +11,6 @@
 				'<div id="lander_handle"></div>' +
 			'</ul>' +
 			'<div id="tabs-1" style="padding-left:0;padding-right:0">' +
-				jld.pos.posBodyInnerHTML +
 			'</div>' +
 			'<div id="tabs-2">' +
 				jld.pos.plusBodyInnerHTML +
@@ -31,8 +30,6 @@
       // Do not execute duplicate code inside children frames
 	  return;
 	}
-    jld.task.init();
-	jld.pos.init();
 	// Create a float widget.
 	var floatWidget = document.createElement('div');
 	$(floatWidget).html(floatWidgetInnerHTML);
@@ -40,7 +37,6 @@
 	document.body.appendChild(floatWidget);
 	// Render widget
 	jld.task.render();
-	jld.pos.render();
     $('#lander_widget').draggable({ iframeFix: true, containment: "document", handle: "#lander_handle" });
 	$('#lander_widget').tabs({
 		selected: -1,
@@ -48,6 +44,8 @@
 		fx: [{ opacity: 'toggle', duration: 'fast' },{ height: 'toggle', duration: 'fast' }]
 	});
 	$("button").button();
+    jld.task.init();
+	jld.pos.init();
   }
 
   $(function() {
