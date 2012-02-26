@@ -216,9 +216,8 @@ jld.pos.getServerPositions = function(callback) {
 jld.pos.init = function() {
 	jld.pos.getServerPositions(function(data) {
 		var posList = {};
-		posList['to_apply'] = jQuery.grep(data, function(pos) { return pos.pstatus === "to_apply";});
+		posList['to_apply'] = $.grep(data, function(pos) { return pos.pstatus === "to_apply";});
 		var body = jld.pos.constructStepTabsInnerHTML(posList);
-		console.log(body);
 		$(".jld #tabs-1").html(body);
 		jld.pos.render();
 	});
@@ -244,9 +243,11 @@ jld.pos.render = function() {
 	$(".jld .posMoveBtn button").button();
 	$(".jld .posMoveBtn").mouseover(function(){
 		var pid = $(this).parent().attr('pid');
-		$(".jld #pos" + pid + " .posMoveExpanded").css('display', 'block');
+		var element = $(".jld #pos" + pid + " .posMoveExpanded");
+		element.css('display', 'block');
 	});
 	$(".jld .posMoveBtn").mouseout(function(){
+		console.log('mouseout');
 		var pid = $(this).parent().attr('pid');
 		$(".jld #pos" + pid + " .posMoveExpanded").css('display', 'none');
 	});
