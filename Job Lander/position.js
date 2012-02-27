@@ -172,6 +172,8 @@ jld.pos.render = function() {
 	$(".posDetail").click(function(){
 		event.stopPropagation();
 	});
+  
+  $(".lander_datepicker").datepicker();
 
 	// TODO(baddth): Check with Trenton about this.
     //TODO: Make .lander_datepicker class elements pop out a datepicker. Not sure why the following code doesn't work:
