@@ -47,24 +47,24 @@ jld.pos.constructStepBoxInnerHTML = function(posList) {
 					'<div class="posBoxCount round">0</div>',
 				'</a>',
 			'</li>',
-			'<li class="stepBtn ui-state-default">',
+			'<li class="stepBtn stepBtn-to_apply ui-state-default">',
 				'<a href="#stepTab-2">To Apply',
-					'<div class="posBoxCount round">', posList['to_apply'].length,'</div>',
+					'<div class="posBoxCount round posBoxCountVal-to_apply">', posList['to_apply'].length,'</div>',
 				'</a>',
 			'</li>',
-			'<li class="stepBtn ui-state-default">',
+			'<li class="stepBtn stepBtn-applied ui-state-default">',
 				'<a href="#stepTab-3">Applied and Waiting',
-					'<div class="posBoxCount round">0</div>',
+					'<div class="posBoxCount round posBoxCountVal-applied">', posList['applied'].length,'</div>',
 				'</a>',
 			'</li>',
-			'<li class="stepBtn ui-state-default">',
+			'<li class="stepBtn stepBtn-to_schedule ui-state-default">',
 				'<a href="#stepTab-4">To Schedule',
-					'<div class="posBoxCount round">0</div>',
+					'<div class="posBoxCount round posBoxCountVal-to_schedule">', posList['to_schedule'].length,'</div>',
 				'</a>',
 			'</li>',
-			'<li class="stepBtn ui-state-default" style="font-size:10px">',
+			'<li class="stepBtn stepBtn-interviewed ui-state-default" style="font-size:10px">',
 				'<a href="#stepTab-5">Interviewed and Waiting',
-					'<div class="posBoxCount round">0</div>',
+					'<div class="posBoxCount round posBoxCountVal-interviewed">', posList['interviewed'].length,'</div>',
 				'</a>',
 			'</li>',
 			'<li class="stepBtn ui-state-default" style="font-size:10px;margin-left:10px">',
@@ -122,8 +122,10 @@ jld.pos.constructPosHTML = function(pos){
 };
 
 // Construct an innerHTML for a group of positions
-jld.pos.constructPosListHTML = function(positions) {
-	var html = ['<div class="positions">'];
+// positions = array of positions
+// pstatus = Position status of this group of positions.
+jld.pos.constructPosListHTML = function(positions, pstatus) {
+	var html = ['<div class="positions" id="pos-'+pstatus+'">'];
 	for (var i = 0; i < positions.length; i++) {
 		html.push(jld.pos.constructPosHTML(positions[i]));
 	}
@@ -149,18 +151,26 @@ jld.pos.constructStepTabsInnerHTML = function(posList) {
 						'</a>',
 					'</h3>',
 				'</div>',
+                // TODO(baddth): Use loop for below chunk instead
 				'<div id="stepTab-2" style="padding:0">',
-					'<h3>You have ', posList['to_apply'].length,' Positions listed as "To Apply"</h3>',
-					jld.pos.constructPosListHTML(posList['to_apply']),
+					'<h3>You have <span class="posBoxCountVal-to_apply">', posList['to_apply'].length,'</span>',
+                      ' Positions listed as "To Apply"</h3>',
+					jld.pos.constructPosListHTML(posList['to_apply'], 'to_apply'),
 				'</div>',
 				'<div id="stepTab-3" style="padding:0">',
-					'<h3>You have 0 Positions listed as "Applied and Waiting"</h3>',
+					'<h3>You have <span class="posBoxCountVal-applied">', posList['applied'].length,'</span>',
+                      ' Positions listed as "Applied and Waiting"</h3>',
+					jld.pos.constructPosListHTML(posList['applied'], 'applied'),
 				'</div>',
 				'<div id="stepTab-4" style="padding:0">',
-					'<h3>No Position listed as "To Schedule"</h3>',
+					'<h3>You have <span class="posBoxCountVal-to_schedule">', posList['to_schedule'].length,'</span>',
+                      ' Positions listed as "To Schedule"</h3>',
+					jld.pos.constructPosListHTML(posList['to_schedule'], 'to_schedule'),
 				'</div>',
 				'<div id="stepTab-5" style="padding:0">',
-					'<h3>No Position listed as "Interviewed and Waiting"</h3>',
+					'<h3>You have <span class="posBoxCountVal-interviewed">', posList['interviewed'].length,'</span>',
+                      ' Positions listed as "Interviewed and Waiting"</h3>',
+					jld.pos.constructPosListHTML(posList['interviewed'], 'interviewed'),
 				'</div>',
 				'<div id="stepTab-6" style="padding:0">',
 					'<h3>Under Construction</h3>',
@@ -202,6 +212,9 @@ jld.pos.createNewPosition = function(){
 	return false;
 };
 
+// A function to perform after the move-to-status button is clicked.
+// posElemenet = a DIV element of position
+// newStatus = a new status of this position to be set
 jld.pos.movePosition = function(posElement, newStatus) {
     var pid = posElement.attr('pid');
     // TODO(baddth): Add error handler.
@@ -215,6 +228,35 @@ jld.pos.movePosition = function(posElement, newStatus) {
             }
            }
     });
+    // update posBoxCount for current pstatus
+    var currentStatus = posElement.parent('.positions').attr('id');
+    if (currentStatus) {
+        currentStatus = currentStatus.substring(4);
+        var count = parseInt($('.jld .posBoxCountVal-' + currentStatus).html());
+        $('.jld .posBoxCountVal-' + currentStatus).html(count-1);
+    }
+
+    // Move posElement to the new step
+    posElement.parent().remove(posElement);
+    $('.jld #pos-' + newStatus).append(posElement);
+    
+    // Update posBoxCount for new pstatus
+    var count = parseInt($('.jld .posBoxCountVal-' + newStatus).html());
+    $('.jld .posBoxCountVal-' + newStatus).html(count+1);
+    
+    // Start color animation on a new status number
+    jld.animate(255,$('.jld .stepBtn-' + newStatus + ' .posBoxCount'));
+};
+
+// This function is created to replace Jquery animate which doesn't support color animation yet
+jld.animate = function(step,element) {
+    if (step < 0) {
+        return;
+    }
+    element.css('color', 'rgb(' + step + ',0,0)');
+    setTimeout(function(){
+               jld.animate(step-1, element);
+    }, 1);
 };
 
 // A function to download positon list from server.
@@ -232,7 +274,11 @@ jld.pos.getServerPositions = function(callback) {
 jld.pos.init = function() {
 	jld.pos.getServerPositions(function(data) {
 		var posList = {};
-		posList['to_apply'] = $.grep(data, function(pos) { return pos.pstatus === "to_apply";});
+        posList['to_apply'] = $.grep(data, function(pos) { return pos.pstatus === "to_apply";});
+        posList['applied'] = $.grep(data, function(pos) { return pos.pstatus === "applied";});
+        posList['to_schedule'] = $.grep(data, function(pos) { return pos.pstatus === "to_schedule";});
+        posList['interviewed'] = $.grep(data, function(pos) { return pos.pstatus === "interviewed";});
+                               
 		var body = jld.pos.constructStepTabsInnerHTML(posList);
 		$(".jld #tabs-1").html(body);
 		jld.pos.render();
@@ -269,14 +315,11 @@ jld.pos.render = function() {
 	});
     // Mouseout event of the Move button inside Position
 	$(".jld .posMoveBtn").mouseout(function(){
-		console.log('mouseout');
 		var pid = $(this).parent('.pos').attr('pid');
 		$(".jld #pos" + pid + " .posMoveExpanded").css('display', 'none');
 	});
     $(".jld .posMoveExpanded button").click(function() {
         var pos = $(this).parents('.pos');
-        console.log(pos);
-        console.log(pos.attr('pstatus'));
         var pstatus = $(this).attr('pstatus');
         jld.pos.movePosition(pos, pstatus);
     });
