@@ -85,13 +85,7 @@ jld.pos.constructPosHTML = function(pos){
 		'<div class="pos" id="pos', pos.id,'" pid="', pos.id,'">',
 			'<div class="posDg"><span class="ui-icon ui-icon-star"></span></div>',
 			'<div class="posTitle">', pos.name,'</div>',
-			'<div class="posMoveBtn"><button>Move <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-w"></span></button>',
-				'<div class="posMoveExpanded">');
-    for (var i = 0; i < jld.pos.stepLabels.length; i++) {
-        html.push('<button style="margin:2px 0" pstatus="', jld.pos.steps[i] ,'">', jld.pos.stepLabels[i], '</button>');
-    }
-    html.push(
-				'</div>',
+			'<div class="posMoveBtn"><button>Move <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span></button>',
 			'</div>',
 			'<div class="posDetail">',
 				'<div class="posDesc">', pos.details, '</div>',
@@ -175,6 +169,13 @@ jld.pos.constructStepTabsInnerHTML = function(posList) {
 				'<div id="stepTab-6" style="padding:0">',
 					'<h3>Under Construction</h3>',
 				'</div>',
+                '<div id="posMoveExpanded" style="z-index:110">');
+    for (var i = 0; i < jld.pos.stepLabels.length; i++) {
+      html.push('<button style="margin:2px 0" pstatus="', jld.pos.steps[i] ,'">', jld.pos.stepLabels[i], '</button>');
+    }
+    html.push(
+              '</div>',
+              '<div id="posMoveExpandedLayer" style="z-index:109"></div>',
 			'</div>');
 	return html.join('');
 };
@@ -307,20 +308,29 @@ jld.pos.render = function() {
 	});
     // Render the Move button inside Position
 	$(".jld .posMoveBtn button").button();
+    $(".jld #posMoveExpanded button").button();
     // Mouseover event of the Move button inside Position
-	$(".jld .posMoveBtn").mouseover(function(){
+	$(".jld .posMoveBtn").click(function(){
 		var pid = $(this).parent('.pos').attr('pid');
-		var element = $(".jld #pos" + pid + " .posMoveExpanded");
-		element.css('display', 'block');
+        var fposition = $(this).offset();
+		var element = $(".jld #posMoveExpanded");
+        element.css('top', fposition.top+33);
+        element.css('left', fposition.left-100);
+        element.attr('pid', pid);
+        element.css('display', 'block');
+        element.css('position', 'fixed');
+		var deselectLayer = $(".jld #posMoveExpandedLayer");
+        deselectLayer.css('display', 'block');
 	});
-    // Mouseout event of the Move button inside Position
-	$(".jld .posMoveBtn").mouseout(function(){
-		var pid = $(this).parent('.pos').attr('pid');
-		$(".jld #pos" + pid + " .posMoveExpanded").css('display', 'none');
-	});
-    $(".jld .posMoveExpanded button").click(function() {
-        var pos = $(this).parents('.pos');
+    $(".jld #posMoveExpandedLayer").click(function() {
+        $(this).css('display', 'none');
+		$(".jld #posMoveExpanded").css('display', 'none');
+    });
+    $(".jld #posMoveExpanded button").click(function() {
+		var pid = $(this).parent("#posMoveExpanded").attr('pid');
+        var pos = $(".jld #pos" + pid);
         var pstatus = $(this).attr('pstatus');
         jld.pos.movePosition(pos, pstatus);
+        $(".jld #posMoveExpandedLayer").click();
     });
 };

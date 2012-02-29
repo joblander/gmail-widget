@@ -164,7 +164,7 @@
 .jld .posMoveBtn button {
   width:100px;
 }
-.jld .posMoveExpanded {
+.jld #posMoveExpanded {
   display:none;
   position:absolute;
   z-index:1005;
@@ -176,7 +176,7 @@
   width:200px;
   padding:5px;
 }
-.jld .posMoveExpanded button {
+.jld #posMoveExpanded button {
   width:200px;
   margin:0;
 }
@@ -184,5 +184,17 @@
   cursor:pointer;
 }
 .jld .posMoveBtn .ui-icon {
-  float:left;
+  float:right;
+}
+.jld .positions {
+    overflow-y:scroll;
+    max-height:260px;
+}
+.jld #posMoveExpandedLayer {
+    width:100%;
+    height:100%;
+    position:fixed;
+    left:0;
+    top:0;
+    display:none;
 }
