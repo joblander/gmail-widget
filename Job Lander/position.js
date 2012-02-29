@@ -84,7 +84,14 @@ jld.pos.constructPosHTML = function(pos){
 	html.push(
 		'<div class="pos" id="pos', pos.id,'" pid="', pos.id,'">',
 			'<div class="posDg"><span class="ui-icon ui-icon-star"></span></div>',
-			'<div class="posTitle">', pos.name,'</div>',
+			'<div class="posTitle">', pos.name, '</div>',
+			'<div class="posDg posDelBtn" style="vertical-align:bottom;margin-left:5px">',
+				'<span class="ui-button-icon-primary ui-icon ui-icon ui-icon-close"></span>',
+			'</div>',
+			'<div class="posDelExpanded" style="display:none">',
+				'<button class="posDelConfirmBtn" style="margin: 0 0 0 10px">Delete</button>',
+				'<button class="posDelCancelBtn" style="margin: 0 0 0 5px">Cancel</button>',
+			'</div>',
 			'<div class="posMoveBtn"><button>Move <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span></button>',
 			'</div>',
 			'<div class="posDetail">',
@@ -317,15 +324,18 @@ jld.pos.render = function() {
         element.css('top', fposition.top+33);
         element.css('left', fposition.left-100);
         element.attr('pid', pid);
-        element.css('display', 'block');
+		element.animate({height: 'toggle',direction:'top',speed:'fast'});
+        //element.css('display', 'block');
         element.css('position', 'fixed');
 		var deselectLayer = $(".jld #posMoveExpandedLayer");
         deselectLayer.css('display', 'block');
 	});
+	// Hidden layer behind the float panel. This is to capture click outside panel
     $(".jld #posMoveExpandedLayer").click(function() {
         $(this).css('display', 'none');
 		$(".jld #posMoveExpanded").css('display', 'none');
     });
+	// Mouse event for the float panel for move-to-step
     $(".jld #posMoveExpanded button").click(function() {
 		var pid = $(this).parent("#posMoveExpanded").attr('pid');
         var pos = $(".jld #pos" + pid);
@@ -333,4 +343,20 @@ jld.pos.render = function() {
         jld.pos.movePosition(pos, pstatus);
         $(".jld #posMoveExpandedLayer").click();
     });
+	// Click event for delete button. This will trigger Confirm/Cancel button
+	$(".jld .posDelBtn").click(function() {
+		$(this).css('display','none');
+		$(this).siblings(".jld .posDelExpanded").css('display','inline-block');
+	});
+	// Render delete confirm and cancel button
+	$(".jld .posDelExpanded button").button();
+	// Click event for cancel delete button
+	$(".jld .posDelCancelBtn").click(function() {
+		$(this).parent().siblings(".jld .posDelBtn").css('display','inline-block');
+		$(this).parent().css('display','none');
+	});
+	// Click event for confirm delete button
+	$(".jld .posDelConfirmBtn").click(function() {
+		alert('pending implementing delete function');
+	});
 };
