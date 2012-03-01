@@ -2,27 +2,33 @@
 
 (function() {
 
-  floatWidgetInnerHTML =
-	'<div class="jld">' +
-		'<div id="lander_widget" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="position:fixed;top:74px;right:100px">' +
-			'<ul class="lander_menu" style="border:0;padding:0;position:relative">' +
-				jld.pos.tabButtonsInnerHTML +
-				jld.task.tabButtonsInnerHTML +
-				'<div id="lander_handle"></div>' +
-			'</ul>' +
-			'<div id="tabs-1" style="padding-left:0;padding-right:0">' +
-			'</div>' +
-			'<div id="tabs-2">' +
-				jld.pos.plusBodyInnerHTML +
-			'</div>' +
-			'<div id="tabs-3" style="padding-left:0;padding-right:0">' +
-				jld.task.taskBodyInnerHTML +
-			'</div>' +
-			'<div id="tabs-4">' +
-				jld.task.plusBodyInnerHTML +
-			'</div>' +
-		'</div>' +
-    '</div>';
+  floatWidgetInnerHTML = [];
+  floatWidgetInnerHTML.push(
+	'<div class="jld">',
+		'<div id="lander_widget" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="position:fixed;top:74px;right:100px">',
+			'<ul class="lander_menu" style="border:0;padding:0;position:relative">',
+				jld.pos.tabButtonsInnerHTML,
+				jld.task.tabButtonsInnerHTML,
+				jld.setting.tabButtonsInnerHTML,
+				'<div id="lander_handle"></div>',
+			'</ul>',
+			'<div id="tabs-1" style="padding-left:0;padding-right:0">',
+			'</div>',
+			'<div id="tabs-2">',
+				jld.pos.plusBodyInnerHTML,
+			'</div>',
+			'<div id="tabs-3" style="padding-left:0;padding-right:0">',
+				jld.task.taskBodyInnerHTML,
+			'</div>',
+			'<div id="tabs-4">',
+				jld.task.plusBodyInnerHTML,
+			'</div>',
+            '<div id="tabs-5">',
+                jld.setting.settingBodyInnerHTML,
+            '</div>',
+		'</div>',
+    '</div>');
+  floatWidgetInnerHTML = floatWidgetInnerHTML.join('');
 
   // Can be executed only when all resources are loaded.
   main = function() {
