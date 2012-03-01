@@ -357,6 +357,16 @@ jld.pos.render = function() {
 	});
 	// Click event for confirm delete button
 	$(".jld .posDelConfirmBtn").click(function() {
-		alert('pending implementing delete function');
-	});
+		var pid = $(this).parents(".pos").attr('pid');
+        $.ajax({
+            url:"http://joblander.herokuapp.com/users/1/positions/" + pid + ".json",
+            type:"delete",
+            statusCode: {
+                204: function() {
+
+                }
+            }
+        });
+        $(this).parents("#pos" + pid).remove();
+    });
 };
