@@ -32,7 +32,7 @@ jld.pos.getDummyList = function() {
 jld.pos.tabButtonsInnerHTML = [];
 jld.pos.tabButtonsInnerHTML.push(
 	'<li class="ui-corner-all"><a href="#tabs-1">Positions<span class="notify round">10</span></a></li>',
-	'<li style="border:0"><a href="#tabs-2" style="padding:0"><img src="//baddth.com/jld/images/plus-icon.png" style="vertical-align:middle"></a></li>'
+	'<li style="border:0"><a href="#tabs-2" style="padding:0" id="tab-2-link"><img src="//baddth.com/jld/images/plus-icon.png" style="vertical-align:middle"></a></li>'
 );
 jld.pos.tabButtonsInnerHTML = jld.pos.tabButtonsInnerHTML.join("");
 
