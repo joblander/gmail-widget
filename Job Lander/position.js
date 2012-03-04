@@ -1,7 +1,7 @@
 /* Position Management related code goes here. */
 window.jld = window.jld || {};
 window.jld.pos = {};
-window.jld.pos.steps = ['','to_apply','applied','to_schedule','interviewed','offered','rejected','interested'];
+window.jld.pos.steps = ['','to_apply','applied','to_schedule','interviewed','offered','rejected','not_interested'];
 window.jld.pos.stepLabels = ['To Review','To Apply','Applied and Waiting','To Schedule','Interviewed and Waiting','Closed - got an offer','Closed - got rejected','Closed - not interested'];
 
 // Dummy data for testing
@@ -67,9 +67,9 @@ jld.pos.constructStepBoxInnerHTML = function(posList) {
 					'<div class="posBoxCount round posBoxCountVal-interviewed">', posList['interviewed'].length,'</div>',
 				'</a>',
 			'</li>',
-			'<li class="stepBtn ui-state-default" style="font-size:10px;margin-left:10px">',
+			'<li class="stepBtn stepBtn-closed ui-state-default" style="font-size:10px;margin-left:10px">',
 				'<a href="#stepTab-6">Closed',
-					'<div class="posBoxCount round">0</div>',
+					'<div class="posBoxCount round posBoxCountVal-closed">', posList['offered'].length + posList['rejected'].length + posList['not_interested'].length,'</div>',
 				'</a>',
 			'</li>',
 			'</ul>',
@@ -174,7 +174,28 @@ jld.pos.constructStepTabsInnerHTML = function(posList) {
 					jld.pos.constructPosListHTML(posList['interviewed'], 'interviewed'),
 				'</div>',
 				'<div id="stepTab-6" style="padding:0">',
-					'<h3>Under Construction</h3>',
+					'<div id="closedTabs">',
+                        '<ul style="background:none;border:0">',
+                            '<li class="closedBtn ui-state-default nobutton"><a href="#closed-offer-tab">Got an Offer</a></li>',
+                            '<li class="closedBtn ui-state-default nobutton"><a href="#closed-rejected-tab">Got Rejected</a></li>',
+                            '<li class="closedBtn ui-state-default nobutton"><a href="#closed-not_interested-tab">Not interested</a></li>',
+                        '</ul>',
+                        '<div id="closed-offer-tab" style="padding:0">',
+                            '<h3>You have <span class="posBoxCountVal-offered">', posList['offered'].length,'</span>',
+                            ' Positions listed as "Offered"</h3>',
+        					jld.pos.constructPosListHTML(posList['offered'], 'offered'),
+                        '</div>',
+                        '<div id="closed-rejected-tab" style="padding:0">',
+                            '<h3>You have <span class="posBoxCountVal-rejected">', posList['rejected'].length,'</span>',
+                            ' Positions listed as "Rejected"</h3>',
+        					jld.pos.constructPosListHTML(posList['rejected'], 'rejected'),
+                        '</div>',
+                        '<div id="closed-not_interested-tab" style="padding:0">',
+                            '<h3>You have <span class="posBoxCountVal-not_interested">', posList['not_interested'].length,'</span>',
+                            ' Positions listed as "Not Interested"</h3>',
+        					jld.pos.constructPosListHTML(posList['not_interested'], 'not_interested'),
+                        '</div>',
+                    '</div>',
 				'</div>',
                 '<div id="posMoveExpanded" style="z-index:110">');
     for (var i = 0; i < jld.pos.stepLabels.length; i++) {
@@ -242,6 +263,11 @@ jld.pos.movePosition = function(posElement, newStatus) {
         currentStatus = currentStatus.substring(4);
         var count = parseInt($('.jld .posBoxCountVal-' + currentStatus).html());
         $('.jld .posBoxCountVal-' + currentStatus).html(count-1);
+        // update posBoxCount for currently Closed
+        if (currentStatus == 'offered' || currentStatus == 'rejected' || currentStatus == 'not_interested') {
+            var count = parseInt($('.jld .posBoxCountVal-closed').html());
+            $('.jld .posBoxCountVal-closed').html(count-1);
+        }
     }
 
     // Move posElement to the new step
@@ -251,9 +277,16 @@ jld.pos.movePosition = function(posElement, newStatus) {
     // Update posBoxCount for new pstatus
     var count = parseInt($('.jld .posBoxCountVal-' + newStatus).html());
     $('.jld .posBoxCountVal-' + newStatus).html(count+1);
-    
-    // Start color animation on a new status number
-    jld.animate(255,$('.jld .stepBtn-' + newStatus + ' .posBoxCount'));
+
+    // update posBoxCount for newly Closed
+    if (newStatus == 'offered' || newStatus == 'rejected' || newStatus == 'not_interested') {
+        var count = parseInt($('.jld .posBoxCountVal-closed').html());
+        $('.jld .posBoxCountVal-closed').html(count+1);
+        jld.animate(255,$('.jld .stepBtn-closed' + ' .posBoxCount'));
+    } else {
+        // Start color animation on a new status number
+        jld.animate(255,$('.jld .stepBtn-' + newStatus + ' .posBoxCount'));
+    }
 };
 
 // This function is created to replace Jquery animate which doesn't support color animation yet
@@ -286,6 +319,9 @@ jld.pos.init = function() {
         posList['applied'] = $.grep(data, function(pos) { return pos.pstatus === "applied";});
         posList['to_schedule'] = $.grep(data, function(pos) { return pos.pstatus === "to_schedule";});
         posList['interviewed'] = $.grep(data, function(pos) { return pos.pstatus === "interviewed";});
+        posList['offered'] = $.grep(data, function(pos) { return pos.pstatus === "offered";});
+        posList['rejected'] = $.grep(data, function(pos) { return pos.pstatus === "rejected";});
+        posList['not_interested'] = $.grep(data, function(pos) { return pos.pstatus === "not_interested";});
                                
 		var body = jld.pos.constructStepTabsInnerHTML(posList);
 		$(".jld #tabs-1").html(body);
@@ -301,6 +337,11 @@ jld.pos.render = function() {
 		collapsible: true,
 		fx: [{ opacity: 'toggle', duration: 'fast' },{ height: 'toggle', duration: 'fast' }]
 	});
+    $('.jld #closedTabs').tabs({
+        selected: 0,
+        collapsible: false,
+		fx: [{ opacity: 'toggle', duration: 'fast' },{ height: 'toggle', duration: 'fast' }]
+    });
 	$(".jld #newPosBtn,.jld .posBox").button();
     // Click event for Create a new Position button
 	$(".jld #newPosBtn").click(jld.pos.createNewPosition);

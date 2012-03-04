@@ -23,6 +23,24 @@
   -webkit-border-radius: 5px;
 }
 
+.jld #closedTabs ul {
+  text-align:center;
+}
+
+.jld #closedTabs .nobutton {
+  border:0;
+  background:none;
+  margin:0 40px;
+}
+
+.jld #closedTabs .nobutton a {
+  color:#000;
+}
+
+.jld #closedTabs .ui-state-active a {
+  color:blue;
+}
+
 .jld #jobs, .jld #tasks, .jld #jobsPlus, .jld #tasksPlus {
   font-size:12px;
 }
