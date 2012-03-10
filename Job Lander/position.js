@@ -82,8 +82,17 @@ jld.pos.constructStepBoxInnerHTML = function(posList) {
 jld.pos.constructPosHTML = function(pos){
 	var html = [];
 	html.push(
-		'<div class="pos" id="pos', pos.id,'" pid="', pos.id,'">',
-			'<div class="posDg"><span class="ui-icon ui-icon-star"></span></div>',
+		'<div class="pos" id="pos', pos.id,'" pid="', pos.id,'">');
+	if (pos.starred)
+	{ // Active star
+		html.push(
+				'<div class="posDgActive"><span class="ui-icon ui-icon-star"></span></div>');
+	} else {
+		// Inactive star
+		html.push(
+				'<div class="posDg"><span class="ui-icon ui-icon-star"></span></div>');
+	}
+	html.push(
 			'<div class="posTitle">', pos.name, '</div>',
 			'<div class="posDg posDelBtn" style="vertical-align:bottom;margin-left:5px">',
 				'<span class="ui-button-icon-primary ui-icon ui-icon ui-icon-close"></span>',
@@ -289,6 +298,46 @@ jld.pos.movePosition = function(posElement, newStatus) {
     }
 };
 
+// A function to perform after the star button is clicked.
+// starElemenet = a DIV element of the star that triggered a click event
+jld.pos.toggleStar = function(starElement) {
+    var pid = starElement.parents(".pos").attr('pid');
+	var posDg = starElement.parent(".posDg");
+	var posDgActive = starElement.parent(".posDgActive");
+	if (posDg.length > 0) {
+		// Add Star
+		// TODO(baddth): Add error handler.
+		$.ajax({
+			   url:'http://joblander.herokuapp.com/users/1/positions/' + pid + '.json',
+			   type:'put',
+			   data:JSON.stringify({'starred':true}),
+			   contentType:"application/json",
+			   statusCode: {
+				204: function() {
+				}
+			   }
+		});
+		posDg.removeClass("posDg");
+		posDg.addClass("posDgActive");
+	} else
+	if (posDgActive.length > 0) {
+		// Remove Star
+		// TODO(baddth): Add error handler.
+		$.ajax({
+			   url:'http://joblander.herokuapp.com/users/1/positions/' + pid + '.json',
+			   type:'put',
+			   data:JSON.stringify({'starred':false}),
+			   contentType:"application/json",
+			   statusCode: {
+				204: function() {
+				}
+			   }
+		});
+		posDgActive.removeClass("posDgActive");
+		posDgActive.addClass("posDg");
+	}
+}
+
 // This function is created to replace Jquery animate which doesn't support color animation yet
 jld.animate = function(step,element) {
     if (step < 0) {
@@ -404,10 +453,12 @@ jld.pos.render = function() {
             type:"delete",
             statusCode: {
                 204: function() {
-
                 }
             }
         });
         $(this).parents("#pos" + pid).remove();
     });
+	$(".jld .pos .ui-icon-star").click(function() {
+		jld.pos.toggleStar($(this));
+	});
 };

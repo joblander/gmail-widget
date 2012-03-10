@@ -64,7 +64,7 @@
   -khtml-border-bottom-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
-.jld #tasks .taskDg, .jld .positions .posDg, .jld .positions .posIcon {
+.jld #tasks .taskDg, .jld .positions .posDg, .jld .positions .posDgActive, .jld .positions .posIcon {
   display:inline-block;
   margin-right:10px;
 }
@@ -87,7 +87,7 @@
 .jld .positions .posDg {
   opacity:0.5;
 }
-.jld .positions .posDg:hover {
+.jld .positions .posDgActive {
   opacity:1;
 }
 .jld .task:hover, .jld .pos:hover {
