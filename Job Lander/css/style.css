@@ -7,7 +7,6 @@
   top:0;
   right:0
 }
-
 .jld #lander_widget input, .jld #lander_widget textarea {
   width: 100%;
   padding:4px;
@@ -18,29 +17,23 @@
   box-sizing: border-box;
   white-space:normal;
 }
-
 .jld .round {
   -webkit-border-radius: 5px;
 }
-
 .jld #closedTabs ul {
   text-align:center;
 }
-
 .jld #closedTabs .nobutton {
   border:0;
   background:none;
   margin:0 40px;
 }
-
 .jld #closedTabs .nobutton a {
   color:#000;
 }
-
 .jld #closedTabs .ui-state-active a {
   color:blue;
 }
-
 .jld #jobs, .jld #tasks, .jld #jobsPlus, .jld #tasksPlus {
   font-size:12px;
 }
@@ -174,12 +167,15 @@
 .jld .posExpand .posTitle {
   font-weight:bold;
 }
-.jld .posMoveBtn {
+.jld .pos .posMoveBtn {
   position:absolute;
   right:5px;
   top:-5px;
 }
-.jld .posMoveBtn button {
+.jld #tabs-2 .posMoveBtn button {
+  width:180px;
+}
+.jld .pos .posMoveBtn button {
   width:100px;
 }
 .jld #posMoveExpanded {
@@ -193,6 +189,10 @@
   top:0px;
   width:200px;
   padding:5px;
+}
+.jld .confirmMessage {
+  text-align:center;
+  color:red;
 }
 .jld #posMoveExpanded button {
   width:200px;

@@ -26,6 +26,9 @@
             '<div id="tabs-5">',
                 jld.setting.settingBodyInnerHTML,
             '</div>',
+            '<div>',
+				jld.pos.rootInnerHTML,
+            '</div>',
 		'</div>',
     '</div>');
   floatWidgetInnerHTML = floatWidgetInnerHTML.join('');

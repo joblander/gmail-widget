@@ -36,6 +36,19 @@ jld.pos.tabButtonsInnerHTML.push(
 );
 jld.pos.tabButtonsInnerHTML = jld.pos.tabButtonsInnerHTML.join("");
 
+// Elements that are shared by other pages. These will be populated at the root element level.
+jld.pos.rootInnerHTML = [];
+jld.pos.rootInnerHTML.push(
+	'<div id="posMoveExpanded" style="z-index:110">');
+for (var i = 1; i < jld.pos.stepLabels.length; i++) {
+    jld.pos.rootInnerHTML.push('<button class="pstatus', jld.pos.steps[i] ,'" style="margin:2px 0" sid="',i,'" pstatus="', jld.pos.steps[i] ,'">',
+		jld.pos.stepLabels[i], '</button>');
+}
+jld.pos.rootInnerHTML.push(
+	'</div>',
+	'<div id="posMoveExpandedLayer" style="z-index:109"></div>');
+jld.pos.rootInnerHTML = jld.pos.rootInnerHTML.join("");
+
 // innerHTML of a content inside Process Box (To Review, To Apply, ..., etc).
 jld.pos.constructStepBoxInnerHTML = function(posList) {
 	var html = [];
@@ -76,7 +89,6 @@ jld.pos.constructStepBoxInnerHTML = function(posList) {
 			'<div style="clear:both"></div>');
 	return html.join("");
 };
-
 
 // A function to construct an innerHTML for a single post
 jld.pos.constructPosHTML = function(pos){
@@ -206,13 +218,6 @@ jld.pos.constructStepTabsInnerHTML = function(posList) {
                         '</div>',
                     '</div>',
 				'</div>',
-                '<div id="posMoveExpanded" style="z-index:110">');
-    for (var i = 0; i < jld.pos.stepLabels.length; i++) {
-      html.push('<button style="margin:2px 0" pstatus="', jld.pos.steps[i] ,'">', jld.pos.stepLabels[i], '</button>');
-    }
-    html.push(
-              '</div>',
-              '<div id="posMoveExpandedLayer" style="z-index:109"></div>',
 			'</div>');
 	return html.join('');
 };
@@ -227,13 +232,21 @@ jld.pos.plusBodyInnerHTML.push(
 	'<div><textarea id="new_position_comments" placeholder="Comments"></textarea></div>',
 	'<div><input id="new_position_app_link" type="text" placeholder="Link to Application"/></div>',
 	'<div><input id="new_position_app_due_date" type="text" class="lander_datepicker" placeholder="Application Due Date"/></div>',
+	'<div>',
+		'<span>Current Status </span><div class="posMoveBtn" style="display:inline-block" sid="1" pstatus="to_apply"><button style="margin-left:5px"><span class="label">To Apply</span> <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span></button></div>',
+	'</div>',
 	'<span class="actions">',
 		'<input style="margin-top:15px" id="newPosBtn" type="button" value="Create a New Position">',
-	'</span>');
+	'</span>',
+	'<div class="confirmMessage"></div>');
 jld.pos.plusBodyInnerHTML = jld.pos.plusBodyInnerHTML.join("");
 
 // This function is called when a 'Create a New Position' button is hit.
 jld.pos.createNewPosition = function(){
+	if ($(".jld #new_position_name").val() == '') {
+		$(".jld #tabs-2 .confirmMessage").html('Position name is a required');
+		return;
+	}
 	var position = {};
 	position.name = $(".jld #new_position_name").val();
 	position.details = $(".jld #new_position_description").val();
@@ -241,13 +254,51 @@ jld.pos.createNewPosition = function(){
 	position.comments = $(".jld #new_position_comments").val();
 	position.app_link = $(".jld #new_position_app_link").val();
 	position.app_due_date = $(".jld #new_position_app_due_date").val();
+	var newStatus = $(".jld #tabs-2 .posMoveBtn").attr('pstatus');
+	var sid = parseInt($(".jld #tabs-2 .posMoveBtn").attr('sid'));
+	position.pstatus = newStatus;
 	$.ajax({
 		url:"http://joblander.herokuapp.com/users/1/positions.json",
 		type:"POST",
 		data:JSON.stringify(position),
-		contentType:"application/json"
+		contentType:"application/json",
+		success: function(data, textStatus, jqXHR){
+			position.id = data.id;
+			jld.pos.createNewPosition_success(position.id, position, newStatus, sid);
+		},
+		error: function(){
+			jld.pos.createNewPosition_error();
+		}
 	});
-	return false;
+};
+
+// This function is called after server successfully created a new position
+jld.pos.createNewPosition_success = function(pid,position,newStatus,sid){
+	var posElement = jld.pos.constructPosHTML(position);
+    $('.jld #pos-' + newStatus).append(posElement);
+	jld.pos.renderPosition(".jld #pos" + pid);
+	$(".jld #new_position_name").val('');
+	$(".jld #new_position_description").val('');
+	$(".jld #new_position_company").val('');
+	$(".jld #new_position_comments").val('');
+	$(".jld #new_position_app_link").val('');
+	$(".jld #new_position_app_due_date").val('');
+	$(".jld #new_position_app_due_date").val('');
+	$(".jld #tabs-2 .confirmMessage").html('Position was added successfully and marked as ' +
+		'<a href="#" id="linkToStep" style="color:blue;text-decoration:underline">' + jld.pos.stepLabels[sid] + '</a>');
+	$(".jld #linkToStep").click(function(){
+		if ($('.jld #lander_widget').tabs().tabs('option', 'selected') != 0) {
+		    $('.jld #lander_widget').tabs('select', 0);
+		}
+		if ($('.jld #stepTabs').tabs().tabs('option', 'selected') != sid) {
+			$('.jld #stepTabs').tabs('select', sid);
+		}
+		return false;
+	});
+};
+
+jld.pos.createNewPosition_error = function(){
+	$(".jld #tabs-2 .confirmMessage").html('Error occured. Please try again later');
 };
 
 // A function to perform after the move-to-status button is clicked.
@@ -378,24 +429,11 @@ jld.pos.init = function() {
 	});
 };
 
-// A function to run after all elements are put into the widget.
-jld.pos.render = function() {
-    // Render Steps as tab buttons
-	$('.jld #stepTabs').tabs({
-		selected: -1,
-		collapsible: true,
-		fx: [{ opacity: 'toggle', duration: 'fast' },{ height: 'toggle', duration: 'fast' }]
-	});
-    $('.jld #closedTabs').tabs({
-        selected: 0,
-        collapsible: false,
-		fx: [{ opacity: 'toggle', duration: 'fast' },{ height: 'toggle', duration: 'fast' }]
-    });
-	$(".jld #newPosBtn,.jld .posBox").button();
-    // Click event for Create a new Position button
-	$(".jld #newPosBtn").click(jld.pos.createNewPosition);
+// Bind all Position related event into all positions under the prefix
+// prefix = a jquery prefix for positions to get binded with the event
+jld.pos.renderPosition = function(prefix) {
     // Toggle Positon description expansion
-	$(".jld .posTitle").click(function(){
+	$(prefix + " .posTitle").click(function(){
 		var parent = $(this).parent();
 		if (!parent.hasClass("posExpand")){
 			parent.addClass("posExpand");
@@ -404,50 +442,40 @@ jld.pos.render = function() {
 		}
 	});
     // Render the Move button inside Position
-	$(".jld .posMoveBtn button").button();
-    $(".jld #posMoveExpanded button").button();
-    // Mouseover event of the Move button inside Position
-	$(".jld .posMoveBtn").click(function(){
+	$(prefix + " .posMoveBtn button").button();
+    $(prefix + " #posMoveExpanded button").button();
+    
+	// StepSelector in Position
+	$(prefix + " .posMoveBtn").click(function(){
+		jld.pos.showMoveExpanded($(this),33,-100);
 		var pid = $(this).parent('.pos').attr('pid');
-        var fposition = $(this).offset();
 		var element = $(".jld #posMoveExpanded");
-        element.css('top', fposition.top+33);
-        element.css('left', fposition.left-100);
         element.attr('pid', pid);
-		element.animate({height: 'toggle',direction:'top',speed:'fast'});
-        //element.css('display', 'block');
-        element.css('position', 'fixed');
-		var deselectLayer = $(".jld #posMoveExpandedLayer");
-        deselectLayer.css('display', 'block');
+		// Mouse event for the float panel for move-to-step
+		$(".jld #posMoveExpanded button").click(function() {
+			var pid = $(this).parent("#posMoveExpanded").attr('pid');
+			var pos = $(".jld #pos" + pid);
+			var pstatus = $(this).attr('pstatus');
+			jld.pos.movePosition(pos, pstatus);
+			$(".jld #posMoveExpandedLayer").click();
+		});
 	});
-	// Hidden layer behind the float panel. This is to capture click outside panel
-    $(".jld #posMoveExpandedLayer").click(function() {
-        $(this).css('display', 'none');
-		$(".jld #posMoveExpanded").css('display', 'none');
-    });
-	// Mouse event for the float panel for move-to-step
-    $(".jld #posMoveExpanded button").click(function() {
-		var pid = $(this).parent("#posMoveExpanded").attr('pid');
-        var pos = $(".jld #pos" + pid);
-        var pstatus = $(this).attr('pstatus');
-        jld.pos.movePosition(pos, pstatus);
-        $(".jld #posMoveExpandedLayer").click();
-    });
 	// Click event for delete button. This will trigger Confirm/Cancel button
-	$(".jld .posDelBtn").click(function() {
+	$(prefix + " .posDelBtn").click(function() {
 		$(this).css('display','none');
 		$(this).siblings(".jld .posDelExpanded").css('display','inline-block');
 	});
 	// Render delete confirm and cancel button
-	$(".jld .posDelExpanded button").button();
+	$(prefix + " .posDelExpanded button").button();
 	// Click event for cancel delete button
-	$(".jld .posDelCancelBtn").click(function() {
+	$(prefix + " .posDelCancelBtn").click(function() {
 		$(this).parent().siblings(".jld .posDelBtn").css('display','inline-block');
 		$(this).parent().css('display','none');
 	});
 	// Click event for confirm delete button
-	$(".jld .posDelConfirmBtn").click(function() {
+	$(prefix + " .posDelConfirmBtn").click(function() {
 		var pid = $(this).parents(".pos").attr('pid');
+		console.log('delete ' + pid);
         $.ajax({
             url:"http://joblander.herokuapp.com/users/1/positions/" + pid + ".json",
             type:"delete",
@@ -458,7 +486,59 @@ jld.pos.render = function() {
         });
         $(this).parents("#pos" + pid).remove();
     });
-	$(".jld .pos .ui-icon-star").click(function() {
+	// Click event for star button
+	$(prefix + " .ui-icon-star").click(function() {
 		jld.pos.toggleStar($(this));
 	});
+}
+
+// A function to trigger an expanded steps for StepSelector button
+jld.pos.showMoveExpanded = function(handler,offsetTop,offsetLeft) {
+	var fposition = handler.offset();
+	var element = $(".jld #posMoveExpanded");
+	element.css('top', fposition.top+offsetTop);
+	element.css('left', fposition.left+offsetLeft);
+	element.animate({height: 'toggle',direction:'top',speed:'fast'});
+	element.css('position', 'fixed');
+	var deselectLayer = $(".jld #posMoveExpandedLayer");
+	deselectLayer.css('display', 'block');
+};
+
+// A function to run after all elements are put into the widget.
+jld.pos.render = function() {
+    // Render steps as tab
+	$('.jld #stepTabs').tabs({
+		selected: -1,
+		collapsible: true,
+		fx: [{ opacity: 'toggle', duration: 'fast' },{ height: 'toggle', duration: 'fast' }]
+	});
+	// Render Closed-related steps as tab
+    $('.jld #closedTabs').tabs({
+        selected: 0,
+        collapsible: false,
+		fx: [{ opacity: 'toggle', duration: 'fast' },{ height: 'toggle', duration: 'fast' }]
+    });
+	$(".jld #newPosBtn,.jld .posBox").button();
+    // Click event for Create a new Position button
+	$(".jld #newPosBtn").click(jld.pos.createNewPosition);
+	// Render positions and its event to all positions under .jld
+	jld.pos.renderPosition(".jld .pos");
+	// StepSelector in Create new Position tab
+	$(".jld #tabs-2 .posMoveBtn").click(function(){
+		var handler = $(this);
+		jld.pos.showMoveExpanded($(this),33,-12);
+		// Mouse event for the float panel for create a position
+		$(".jld #posMoveExpanded button").click(function() {
+			var sid = $(this).attr('sid');
+			handler.attr('sid', sid);
+			handler.attr('pstatus',window.jld.pos.steps[sid]);
+			handler.find('.label').html(window.jld.pos.stepLabels[sid]);
+			$(".jld #posMoveExpandedLayer").click();
+		});
+	});
+	// Hidden layer behind the float panel. This is to capture click outside panel
+    $(".jld #posMoveExpandedLayer").click(function() {
+        $(this).css('display', 'none');
+		$(".jld #posMoveExpanded").css('display', 'none');
+    });
 };

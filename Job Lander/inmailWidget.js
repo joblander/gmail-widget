@@ -17,7 +17,9 @@ jld.inmailWidget.getConvertButtonGroup = function(title) {
         $(".jld #new_position_comments").val('');
         $(".jld #new_position_app_link").val('');
         $(".jld #new_position_app_due_date").val('');
-        $(".jld #tab-2-link").click();
+		if ($('.jld #lander_widget').tabs().tabs('option', 'selected') != 1) {
+            $('.jld #lander_widget').tabs('select', 1);
+		}
     });
     convertButtonGroup.append(moreConvertButton);
     convertButtonGroup.buttonset();
