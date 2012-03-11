@@ -5,7 +5,7 @@ window.jld.setting = {};
 // innerHTML for tab buttons.
 // TODO(baddth): Replace image url properly.
 jld.setting.tabButtonsInnerHTML =
-	'<li class="ui-corner-all" style="margin-left:10px"><a href="#tabs-5" style="padding:0"><span class="setting-icon"></span></li>';
+	'<li class="ui-corner-all" style="margin-left:10px"><a href="#tabs-5" style="padding:0"><span class="setting-icon"></span></a></li>';
 
 // innerHTML of a content inside Setting tab.
 // TODO: Use data from server to create this.
