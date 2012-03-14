@@ -28,11 +28,11 @@ jld.inmailWidget.getConvertButtonGroup = function(title,emailId) {
         $(".jld #new_position_app_due_date").val('');
 		if ($('.jld #lander_widget').tabs().tabs('option', 'selected') != 1) {
             $('.jld #lander_widget').tabs('select', 1);
-            $('.jld #new_position_email').html(
-                '<input type=checkbox checked> Attach Email <span class="ui-icon ui-icon-link"></span>' +
-                '<div class=email eid="' + emailId + '"><a href="#inbox/' + emailId + '" style="color:blue;text-decoration:underline">' +
-                title + '</a></div>');
 		}
+        $('.jld #new_position_email').html(
+            '<input type=checkbox checked> Attach Email <span class="ui-icon ui-icon-link"></span>' +
+            '<div class=email eid="' + emailId + '"><a href="#inbox/' + emailId + '" style="color:blue;text-decoration:underline">' +
+            title + '</a></div>');
     });
     convertButtonGroup.append(moreConvertButton);
     convertButtonGroup.buttonset();
