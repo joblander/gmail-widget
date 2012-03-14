@@ -114,8 +114,10 @@ jld.pos.constructPosHTML = function(pos){
 				'<button class="posDelConfirmBtn" style="margin: 0 0 0 10px">Delete</button>',
 				'<button class="posDelCancelBtn" style="margin: 0 0 0 5px">Cancel</button>',
 			'</div>',
-			'<div class="posMoveBtn"><button>Move <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span></button>',
+			'<div class="posMoveBtn dsplyMove"><button>Move <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span></button>',
 			'</div>',
+			'<div class="posEmailBtn dsplyAttachment"><button>Attach to Email</button>',
+            '</div>',
 			'<div class="posDetail">',
 				'<div class="posDesc">', pos.details, '</div>',
 				'<div class="posMail">',
@@ -160,6 +162,9 @@ jld.pos.constructPosListHTML = function(positions, pstatus) {
 jld.pos.constructStepTabsInnerHTML = function(posList) {
 	var html = [];
 	html.push(
+            '<div style="background-color:blue" class="dsplyAttachment">',
+              'Choose Position to attach with email. // Pending nicer css here',
+            '</div>',
 			'<div id="stepTabs" style="border:0;margin:0;padding:0">',
 				'<div id="stepBox" class="actions">',
 					jld.pos.constructStepBoxInnerHTML(posList),
@@ -219,6 +224,9 @@ jld.pos.constructStepTabsInnerHTML = function(posList) {
                         '</div>',
                     '</div>',
 				'</div>',
+                '<div style="background-color:blue" class="dsplyAttachment navBar">',
+                  '<button class="backButton">Back</button> Pending nicer css here',
+                '</div>',
 			'</div>');
 	return html.join('');
 };
@@ -446,6 +454,7 @@ jld.pos.renderPosition = function(prefix) {
 	});
     // Render the Move button inside Position
 	$(prefix + " .posMoveBtn button").button();
+	$(prefix + " .posEmailBtn button").button();
     $(prefix + " #posMoveExpanded button").button();
     
 	// StepSelector in Position
@@ -543,5 +552,8 @@ jld.pos.render = function() {
     $(".jld #posMoveExpandedLayer").click(function() {
         $(this).css('display', 'none');
 		$(".jld #posMoveExpanded").css('display', 'none');
+    });
+    $(".jld .navBar .backButton").click(function() {
+        $('.jld #tabs-1').removeClass('attachment');
     });
 };

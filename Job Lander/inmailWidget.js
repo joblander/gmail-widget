@@ -54,6 +54,15 @@ jld.inmailWidget.getAddExistingButtonGroup = function() {
     moreAddButton.button({text:false,icons: {primary: "ui-icon-triangle-1-s"}});
     var addButtonGroup = $("<div style='display:inline-block' class='addBtnGroup'></div>");
     addButtonGroup.append(addButton);
+    addButton.click(function(){
+        if ($('.jld #lander_widget').tabs().tabs('option', 'selected') != 0) {
+            $('.jld #lander_widget').tabs('select', 0);
+        }
+        if ($('.jld #stepTabs').tabs().tabs('option', 'selected') != 1) {
+            $('.jld #stepTabs').tabs('select', 1);
+        }
+        $('.jld #tabs-1').addClass('attachment');
+    });
     addButtonGroup.append(moreAddButton);
     addButtonGroup.buttonset();
     addButton.removeClass('ui-corner-right');
