@@ -323,4 +323,6 @@ jld.pos.render = function() {
         var pstatus = $(this).attr('pstatus');
         jld.pos.movePosition(pos, pstatus);
     });
+    // Make datepicker
+  $(".lander_datepicker").datepicker();  
 };
