@@ -7,7 +7,6 @@
   top:0;
   right:0
 }
-
 .jld #lander_widget input, .jld #lander_widget textarea {
   width: 100%;
   padding:4px;
@@ -18,11 +17,23 @@
   box-sizing: border-box;
   white-space:normal;
 }
-
 .jld .round {
   -webkit-border-radius: 5px;
 }
-
+.jld #closedTabs ul {
+  text-align:center;
+}
+.jld #closedTabs .nobutton {
+  border:0;
+  background:none;
+  margin:0 40px;
+}
+.jld #closedTabs .nobutton a {
+  color:#000;
+}
+.jld #closedTabs .ui-state-active a {
+  color:blue;
+}
 .jld #jobs, .jld #tasks, .jld #jobsPlus, .jld #tasksPlus {
   font-size:12px;
 }
@@ -46,7 +57,7 @@
   -khtml-border-bottom-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
-.jld #tasks .taskDg, .jld .positions .posDg, .jld .positions .posIcon {
+.jld #tasks .taskDg, .jld .positions .posDg, .jld .positions .posDgActive, .jld .positions .posIcon {
   display:inline-block;
   margin-right:10px;
 }
@@ -69,7 +80,7 @@
 .jld .positions .posDg {
   opacity:0.5;
 }
-.jld .positions .posDg:hover {
+.jld .positions .posDgActive {
   opacity:1;
 }
 .jld .task:hover, .jld .pos:hover {
@@ -156,15 +167,18 @@
 .jld .posExpand .posTitle {
   font-weight:bold;
 }
-.jld .posMoveBtn {
+.jld .pos .posMoveBtn, .jld .pos .posEmailBtn {
   position:absolute;
   right:5px;
   top:-5px;
 }
-.jld .posMoveBtn button {
+.jld #tabs-2 .posMoveBtn button {
+  width:180px;
+}
+.jld .pos .posMoveBtn button {
   width:100px;
 }
-.jld .posMoveExpanded {
+.jld #posMoveExpanded {
   display:none;
   position:absolute;
   z-index:1005;
@@ -176,7 +190,11 @@
   width:200px;
   padding:5px;
 }
-.jld .posMoveExpanded button {
+.jld .confirmMessage {
+  text-align:center;
+  color:red;
+}
+.jld #posMoveExpanded button {
   width:200px;
   margin:0;
 }
@@ -184,5 +202,49 @@
   cursor:pointer;
 }
 .jld .posMoveBtn .ui-icon {
-  float:left;
+  float:right;
+}
+.jld .positions {
+    overflow-y:scroll;
+    max-height:260px;
+}
+.jld #posMoveExpandedLayer {
+    width:100%;
+    height:100%;
+    position:fixed;
+    left:0;
+    top:0;
+    display:none;
+}
+.jld .setting-icon {
+    width:22px;
+	height:22px;
+	display:inline-block;
+	background:url(//baddth.com/jld/images/setting-icon.png);
+}
+.jld #new_position_email input { 
+    display: inline-block;
+    width: 16px;
+}
+.jld #new_position_email .ui-icon-link {
+    display: inline-block;
+}
+.jld #new_position_email .email {    
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    height: 15px;
+    width: 450px;
+    display: inline-block;
+    color: blue;
+    text-decoration: underline;
+}
+.jld .dsplyAttachment {
+    display:none;
+}
+.jld .attachment .dsplyAttachment {
+    display:block;
+}
+.jld .attachment .dsplyMove {
+    display:none;
 }
