@@ -14,6 +14,7 @@ jld.pos.getDummyPosition = function(id){
 	position.company = "Test Company";
 	position.comments = "Here is where comments go";
 	position.app_link = "http://www.google.com";
+    
 	position.app_due_date = "2011/01/01";
 	return position;
 };
@@ -235,6 +236,7 @@ jld.pos.plusBodyInnerHTML.push(
 	'<div>',
 		'<span>Current Status </span><div class="posMoveBtn" style="display:inline-block" sid="1" pstatus="to_apply"><button style="margin-left:5px"><span class="label">To Apply</span> <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span></button></div>',
 	'</div>',
+    '<div id="new_position_email"></div>',
 	'<span class="actions">',
 		'<input style="margin-top:15px" id="newPosBtn" type="button" value="Create a New Position">',
 	'</span>',
@@ -284,6 +286,7 @@ jld.pos.createNewPosition_success = function(pid,position,newStatus,sid){
 	$(".jld #new_position_app_link").val('');
 	$(".jld #new_position_app_due_date").val('');
 	$(".jld #new_position_app_due_date").val('');
+    $(".jld #new_position_email").html('');
 	$(".jld #tabs-2 .confirmMessage").html('Position was added successfully and marked as ' +
 		'<a href="#" id="linkToStep" style="color:blue;text-decoration:underline">' + jld.pos.stepLabels[sid] + '</a>');
 	$(".jld #linkToStep").click(function(){

@@ -222,3 +222,21 @@
 	display:inline-block;
 	background:url(//baddth.com/jld/images/setting-icon.png);
 }
+.jld #new_position_email input { 
+    display: inline-block;
+    width: 16px;
+}
+.jld #new_position_email .ui-icon-link {
+    display: inline-block;
+}
+.jld #new_position_email .email {    
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    height: 15px;
+    width: 450px;
+    display: inline-block;
+    color: blue;
+    text-decoration: underline;
+
+}

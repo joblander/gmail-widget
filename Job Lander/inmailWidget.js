@@ -2,7 +2,16 @@
 window.jld = window.jld || {};
 window.jld.inmailWidget = {};
 
-jld.inmailWidget.getConvertButtonGroup = function(title) {
+// find the right place to host common function.
+window.jld.common = window.jld.common || {};
+jld.common.stripHtml = function(html)
+{
+    var tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent||tmp.innerText;
+}
+
+jld.inmailWidget.getConvertButtonGroup = function(title,emailId) {
     // Create Convert-to-a-New-Position Button
     var convertButton = $("<button style='font-size:12px' class='convertBtn'>Convert to a New Position</button>");
     var moreConvertButton = $(
@@ -11,7 +20,7 @@ jld.inmailWidget.getConvertButtonGroup = function(title) {
     var convertButtonGroup = $("<div style='display:inline-block' class='convertBtnGroup'></div>");
     convertButtonGroup.append(convertButton);
     convertButton.click(function(){
-        $(".jld #new_position_name").val(title + ' todo(baddth): trim HTML and put email as an attachment instead of title.');
+        $(".jld #new_position_name").val(title);
         $(".jld #new_position_description").val('');
         $(".jld #new_position_company").val('');
         $(".jld #new_position_comments").val('');
@@ -19,6 +28,10 @@ jld.inmailWidget.getConvertButtonGroup = function(title) {
         $(".jld #new_position_app_due_date").val('');
 		if ($('.jld #lander_widget').tabs().tabs('option', 'selected') != 1) {
             $('.jld #lander_widget').tabs('select', 1);
+            $('.jld #new_position_email').html(
+                '<input type=checkbox checked> Attach Email <span class="ui-icon ui-icon-link"></span>' +
+                '<div class=email eid="' + emailId + '"><a href="#inbox/' + emailId + '" style="color:blue;text-decoration:underline">' +
+                title + '</a></div>');
 		}
     });
     convertButtonGroup.append(moreConvertButton);
@@ -74,7 +87,8 @@ jld.inmailWidget.tryEmbedinmailWidget = function() {
   inmailWidget.className = 'jld';
 
   $(inmailWidget).css({'margin-top':'15px'});
-  $(inmailWidget).append(jld.inmailWidget.getConvertButtonGroup(title_spans[0].innerHTML));
+  $(inmailWidget).append(jld.inmailWidget.getConvertButtonGroup(jld.common.stripHtml(title_spans[0].innerHTML),
+                                                                hashval[hashval.length-1]));
   $(inmailWidget).append(jld.inmailWidget.getAddExistingButtonGroup());
   header_spans[0].appendChild(inmailWidget);
 
