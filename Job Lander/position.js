@@ -1,7 +1,7 @@
 /* Position Management related code goes here. */
 window.jld = window.jld || {};
 window.jld.pos = {};
-window.jld.pos.steps = ['','to_apply','applied','to_schedule','interviewed','offered','rejected','not_interested'];
+window.jld.pos.steps = ['to_review','to_apply','applied','to_schedule','interviewed','offered','rejected','not_interested'];
 window.jld.pos.stepLabels = ['To Review','To Apply','Applied and Waiting','To Schedule','Interviewed and Waiting','Closed - got an offer','Closed - got rejected','Closed - not interested'];
 
 // Dummy data for testing
@@ -58,9 +58,11 @@ jld.pos.constructStepBoxInnerHTML = function(posList) {
 			'<ul style="background:none;border:0">',
 			'<li class="stepBtn ui-state-default round">',
 				'<a href="#stepTab-1">To Review',
-					'<div class="posBoxCount round">0</div>',
+					'<div class="posBoxCount round">', posList['to_review'].length,'</div>',
 				'</a>',
 			'</li>',
+            // TODO(baddth): don't hard code to_apply and all status string here.
+            // use jld.pos.steps instead.
 			'<li class="stepBtn stepBtn-to_apply ui-state-default">',
 				'<a href="#stepTab-2">To Apply',
 					'<div class="posBoxCount round posBoxCountVal-to_apply">', posList['to_apply'].length,'</div>',
@@ -92,21 +94,39 @@ jld.pos.constructStepBoxInnerHTML = function(posList) {
 };
 
 // A function to construct an innerHTML for a single post
-jld.pos.constructPosHTML = function(pos){
+jld.pos.constructPosHTML = function(pos,pstatus){
+    var isFeed = (pstatus == jld.pos.steps[0]);
+    var itemtype = 'pos';
+    if (isFeed) {
+        itemtype = 'feed';
+    }
 	var html = [];
 	html.push(
-		'<div class="pos" id="pos', pos.id,'" pid="', pos.id,'">');
-	if (pos.starred)
-	{ // Active star
-		html.push(
-				'<div class="posDgActive"><span class="ui-icon ui-icon-star"></span></div>');
-	} else {
-		// Inactive star
-		html.push(
-				'<div class="posDg"><span class="ui-icon ui-icon-star"></span></div>');
-	}
-	html.push(
-			'<div class="posTitle">', pos.name, '</div>',
+		'<div class="', itemtype,'" id="pos', pos.id,'" pid="', pos.id,'">');
+    if (!isFeed) {
+        if (pos.starred)
+        { // Active star
+            html.push(
+                      '<div class="posDgActive"><span class="ui-icon ui-icon-star"></span></div>');
+        } else {
+            // Inactive star
+            html.push(
+                      '<div class="posDg"><span class="ui-icon ui-icon-star"></span></div>');
+        }
+    } else {
+        // todo(baddth): implement star
+        html.push(
+                  '<div class="posDg"><span class="ui-icon ui-icon-star"></span></div>');
+    }
+    if (!isFeed) {
+        html.push(
+                  '<div class="posTitle">', pos.name, '</div>');
+    } else {
+        html.push(
+                  '<div class="posTitle"><a href="' + pos.app_link + '" target="_blank" style="color:blue;text-decoration:underline">', pos.name, ' at ' + pos.company + '</a></div>');
+    }
+    if (!isFeed) {
+        html.push(
 			'<div class="posDg posDelBtn" style="vertical-align:bottom;margin-left:5px">',
 				'<span class="ui-button-icon-primary ui-icon ui-icon ui-icon-close"></span>',
 			'</div>',
@@ -141,8 +161,10 @@ jld.pos.constructPosHTML = function(pos){
 						'<div class="posDg" style="margin-left:5px;vertical-align:bottom"><span class="ui-icon ui-icon-close"></span></div>',
 					'</div>',
 				'</div>',
-			'</div>',
-		'</div>');
+			'</div>');
+    }
+    html.push(
+        '</div>');
 	return html.join('');
 };
 
@@ -152,7 +174,7 @@ jld.pos.constructPosHTML = function(pos){
 jld.pos.constructPosListHTML = function(positions, pstatus) {
 	var html = ['<div class="positions" id="pos-'+pstatus+'">'];
 	for (var i = 0; i < positions.length; i++) {
-		html.push(jld.pos.constructPosHTML(positions[i]));
+		html.push(jld.pos.constructPosHTML(positions[i], pstatus));
 	}
 	html.push('</div>');
 	return html.join('');
@@ -178,6 +200,7 @@ jld.pos.constructStepTabsInnerHTML = function(posList) {
 							'</div>',
 						'</a>',
 					'</h3>',
+					jld.pos.constructPosListHTML(posList['to_review'], 'to_review'),
 				'</div>',
                 // TODO(baddth): Use loop for below chunk instead
 				'<div id="stepTab-2" style="padding:0">',
@@ -284,7 +307,7 @@ jld.pos.createNewPosition = function(){
 
 // This function is called after server successfully created a new position
 jld.pos.createNewPosition_success = function(pid,position,newStatus,sid){
-	var posElement = jld.pos.constructPosHTML(position);
+	var posElement = jld.pos.constructPosHTML(position, newStatus);
     $('.jld #pos-' + newStatus).append(posElement);
 	jld.pos.renderPosition(".jld #pos" + pid);
 	$(".jld #new_position_name").val('');
@@ -424,8 +447,8 @@ jld.pos.getServerPositions = function(callback) {
 
 // A function to run in the beginning of main.
 jld.pos.init = function() {
+    var posList = {};
 	jld.pos.getServerPositions(function(data) {
-		var posList = {};
         posList['to_apply'] = $.grep(data, function(pos) { return pos.pstatus === "to_apply";});
         posList['applied'] = $.grep(data, function(pos) { return pos.pstatus === "applied";});
         posList['to_schedule'] = $.grep(data, function(pos) { return pos.pstatus === "to_schedule";});
@@ -433,11 +456,22 @@ jld.pos.init = function() {
         posList['offered'] = $.grep(data, function(pos) { return pos.pstatus === "offered";});
         posList['rejected'] = $.grep(data, function(pos) { return pos.pstatus === "rejected";});
         posList['not_interested'] = $.grep(data, function(pos) { return pos.pstatus === "not_interested";});
-                               
-		var body = jld.pos.constructStepTabsInnerHTML(posList);
-		$(".jld #tabs-1").html(body);
-		jld.pos.render();
+        jld.pos.initAfterGotAllData(posList);
 	});
+    jld.toreview.getToReviewFeed(function(data) {
+        posList['to_review'] = data;
+        jld.pos.initAfterGotAllData(posList);
+    });
+};
+
+jld.pos.initAfterGotAllData = function(posList) {
+    // if two ajax requests haven't filled the result yet, return for now.
+    if (!posList['to_review'] || !posList['to_apply']) {
+        return;
+    }
+    var body = jld.pos.constructStepTabsInnerHTML(posList);
+    $(".jld #tabs-1").html(body);
+    jld.pos.render();    
 };
 
 // Bind all Position related event into all positions under the prefix

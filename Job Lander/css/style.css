@@ -86,7 +86,7 @@
 .jld .task:hover, .jld .pos:hover {
   background:#fff;
 }
-.jld .task, .jld .pos {
+.jld .task, .jld .pos, .jld .feed {
   border-bottom:1px solid #ccc;
   padding:5px;
   margin:5px 0;
