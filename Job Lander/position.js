@@ -1,8 +1,11 @@
 /* Position Management related code goes here. */
 window.jld = window.jld || {};
 window.jld.pos = {};
+window.jld.feed = {};
+window.jld.feed.idGenerator = 0;
 window.jld.pos.steps = ['to_review','to_apply','applied','to_schedule','interviewed','offered','rejected','not_interested'];
 window.jld.pos.stepLabels = ['To Review','To Apply','Applied and Waiting','To Schedule','Interviewed and Waiting','Closed - got an offer','Closed - got rejected','Closed - not interested'];
+window.jld.pos.stepIndex = {'to_review':0,'to_apply':1,'applied':2,'to_schedule':3,'interviewed':4,'offered':5,'rejected':6,'not_interested':7};
 
 // Dummy data for testing
 jld.pos.getDummyPosition = function(id){
@@ -97,12 +100,20 @@ jld.pos.constructStepBoxInnerHTML = function(posList) {
 jld.pos.constructPosHTML = function(pos,pstatus){
     var isFeed = (pstatus == jld.pos.steps[0]);
     var itemtype = 'pos';
+    var attr = 'pid';
+    var buttonLabel = 'Move';
     if (isFeed) {
         itemtype = 'feed';
+        attr = 'fid';
+        buttonLabel = 'Create';
     }
 	var html = [];
+    var id = pos.id;
+    if (isFeed) {
+        id = ++jld.feed.idGenerator;
+    }
 	html.push(
-		'<div class="', itemtype,'" id="pos', pos.id,'" pid="', pos.id,'">');
+		'<div class="', itemtype,'" id="', itemtype, id,'" ',attr,'="', id,'">');
     if (!isFeed) {
         if (pos.starred)
         { // Active star
@@ -125,6 +136,9 @@ jld.pos.constructPosHTML = function(pos,pstatus){
         html.push(
                   '<div class="posTitle"><a href="' + pos.app_link + '" target="_blank" style="color:blue;text-decoration:underline">', pos.name, ' at ' + pos.company + '</a></div>');
     }
+    html.push(
+    '<div class="posMoveBtn dsplyMove"><button>Move <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span></button>',
+    '</div>');
     if (!isFeed) {
         html.push(
 			'<div class="posDg posDelBtn" style="vertical-align:bottom;margin-left:5px">',
@@ -133,8 +147,6 @@ jld.pos.constructPosHTML = function(pos,pstatus){
 			'<div class="posDelExpanded" style="display:none">',
 				'<button class="posDelConfirmBtn" style="margin: 0 0 0 10px">Delete</button>',
 				'<button class="posDelCancelBtn" style="margin: 0 0 0 5px">Cancel</button>',
-			'</div>',
-			'<div class="posMoveBtn dsplyMove"><button>Move <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span></button>',
 			'</div>',
 			'<div class="posEmailBtn dsplyAttachment"><button>Attach to Email</button>',
             '</div>',
@@ -176,6 +188,13 @@ jld.pos.constructPosListHTML = function(positions, pstatus) {
 	for (var i = 0; i < positions.length; i++) {
 		html.push(jld.pos.constructPosHTML(positions[i], pstatus));
 	}
+    // TODO(baddth): delete this and show the spinner only when the scroll hit bottom.
+    if (pstatus == 'to_review'){
+        html.push('<div style="text-align:center;background:#fff">');
+        html.push(  '<img src="//baddth.com/jld/images/loading.gif"/><br/> Loading more result');
+        html.push(  ' <br/><span>Under construction</span>');
+        html.push('</div>');
+    }
 	html.push('</div>');
 	return html.join('');
 };
@@ -193,10 +212,11 @@ jld.pos.constructStepTabsInnerHTML = function(posList) {
 				'</div>',
 				'<div id="stepTab-1" style="padding:0">',
 					'<h3 style="text-align:left">',
-						'<a href="#" title="Change Search" onclick="return false">',
-							'Product Manager, San Francisco',
+						'<a href="#" title="Change Search" class="settingLink">',
+							'<span>Product Manager, San Francisco</span>',
+                            ' (<span style="font-size:12px;color:blue;text-decoration:underline">Change Search</span>)',
 							'<div class="round ui-state-default" style="display:inline-block;vertical-align:bottom;cursor:pointer;margin-left:5px">',
-								'<span class="ui-icon ui-icon-wrench" style="padding:1px"></span>',
+								'<!--span class="ui-icon ui-icon-wrench" style="padding:1px"></span-->',
 							'</div>',
 						'</a>',
 					'</h3>',
@@ -275,7 +295,7 @@ jld.pos.plusBodyInnerHTML.push(
 jld.pos.plusBodyInnerHTML = jld.pos.plusBodyInnerHTML.join("");
 
 // This function is called when a 'Create a New Position' button is hit.
-jld.pos.createNewPosition = function(){
+jld.pos.formNewPosition = function(){
 	if ($(".jld #new_position_name").val() == '') {
 		$(".jld #tabs-2 .confirmMessage").html('Position name is a required');
 		return;
@@ -288,27 +308,33 @@ jld.pos.createNewPosition = function(){
 	position.app_link = $(".jld #new_position_app_link").val();
 	position.app_due_date = $(".jld #new_position_app_due_date").val();
 	var newStatus = $(".jld #tabs-2 .posMoveBtn").attr('pstatus');
-	var sid = parseInt($(".jld #tabs-2 .posMoveBtn").attr('sid'));
 	position.pstatus = newStatus;
-	$.ajax({
-		url:"http://joblander.herokuapp.com/users/1/positions.json",
-		type:"POST",
-		data:JSON.stringify(position),
-		contentType:"application/json",
-		success: function(data, textStatus, jqXHR){
-			position.id = data.id;
-			jld.pos.createNewPosition_success(position.id, position, newStatus, sid);
-		},
-		error: function(){
-			jld.pos.createNewPosition_error();
-		}
-	});
+//	var sid = parseInt($(".jld #tabs-2 .posMoveBtn").attr('sid'));
+    jld.pos.createNewPosition(position);
+};
+
+jld.pos.createNewPosition = function(position){
+    $.ajax({
+        url:"http://joblander.herokuapp.com/users/1/positions.json",
+        type:"POST",
+        data:JSON.stringify(position),
+        contentType:"application/json",
+        success: function(data, textStatus, jqXHR){
+           position.id = data.id;
+           jld.pos.createNewPosition_success(data);
+        },
+        error: function(){
+           jld.pos.createNewPosition_error();
+        }
+    });
 };
 
 // This function is called after server successfully created a new position
-jld.pos.createNewPosition_success = function(pid,position,newStatus,sid){
-	var posElement = jld.pos.constructPosHTML(position, newStatus);
-    $('.jld #pos-' + newStatus).append(posElement);
+jld.pos.createNewPosition_success = function(position){
+    var pid = position.id;
+    var sid = jld.pos.stepIndex[position.pstatus];
+	var posElement = jld.pos.constructPosHTML(position, position.pstatus);
+    $('.jld #pos-' + position.pstatus).append(posElement);
 	jld.pos.renderPosition(".jld #pos" + pid);
 	$(".jld #new_position_name").val('');
 	$(".jld #new_position_description").val('');
@@ -566,9 +592,11 @@ jld.pos.render = function() {
     });
 	$(".jld #newPosBtn,.jld .posBox").button();
     // Click event for Create a new Position button
-	$(".jld #newPosBtn").click(jld.pos.createNewPosition);
-	// Render positions and its event to all positions under .jld
+	$(".jld #newPosBtn").click(jld.pos.formNewPosition);
+	// Render positions and its event to all positions under .jld  .pos
 	jld.pos.renderPosition(".jld .pos");
+	// Render feeds and its event to all positions under .jld .feed
+	jld.toreview.renderFeed(".jld .feed");
 	// StepSelector in Create new Position tab
 	$(".jld #tabs-2 .posMoveBtn").click(function(){
 		var handler = $(this);
@@ -590,6 +618,7 @@ jld.pos.render = function() {
     $(".jld .navBar .backButton").click(function() {
         $('.jld #tabs-1').removeClass('attachment');
     });
-    // Make datepicker
-  $(".lander_datepicker").datepicker();  
+    $(".jld .settingLink").click(function(){
+        $('.jld #lander_widget').tabs('select', 4);
+    });
 };

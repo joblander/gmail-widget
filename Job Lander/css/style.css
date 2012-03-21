@@ -167,7 +167,7 @@
 .jld .posExpand .posTitle {
   font-weight:bold;
 }
-.jld .pos .posMoveBtn, .jld .pos .posEmailBtn {
+.jld .feed .posMoveBtn, .jld .pos .posMoveBtn, .jld .pos .posEmailBtn {
   position:absolute;
   right:5px;
   top:-5px;
@@ -175,7 +175,7 @@
 .jld #tabs-2 .posMoveBtn button {
   width:180px;
 }
-.jld .pos .posMoveBtn button {
+.jld .pos .posMoveBtn button, .jld .feed .posMoveBtn button {
   width:100px;
 }
 .jld #posMoveExpanded {
