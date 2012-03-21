@@ -32,6 +32,8 @@
 /* After Brad Refactored: */
 // Datepicker fixed
 // Maybe Try using most up-to-date jquery now
+// Clear out text box when moving to different tabor activity
+// Notification should be cleared out
       "       <div>"+
       "         <table>"+
       "           <tr>"+
