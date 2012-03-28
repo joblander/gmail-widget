@@ -34,6 +34,7 @@
 // Maybe Try using most up-to-date jquery now
 // Clear out text box when moving to different tabor activity
 // Notification should be cleared out
+// Be able to perhaps change the title of an email title
       "       <div>"+
       "         <table>"+
       "           <tr>"+

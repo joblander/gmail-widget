@@ -576,6 +576,40 @@ jld.pos.showMoveExpanded = function(handler,offsetTop,offsetLeft) {
 	deselectLayer.css('display', 'block');
 };
 
+// Add related email
+jld.pos.addRelatedEmail = function(){
+  // Get the ID of the existing position to add the email to.
+  var pid = $(this).parents(".pos").attr("pid");
+  
+  // Get the ID of the email to add.
+  var hash= window.location.hash;
+  var guid = hash.substring(hash.lastIndexOf('/')+1);
+  
+  var data = {};
+  data.guid = guid;
+  $.ajax({
+    url:"http://joblander.herokuapp.com/users/1/positions/"+pid+"/related_emails.json",
+    type:"POST",
+    data:JSON.stringify(data),
+    contentType:"application/json",
+    success: function(data, textStatus, jqXHR){
+       jld.pos.addRelatedEmail_success(data);
+    },
+    error: function(){
+       jld.pos.addRelatedEmail_error();
+    }
+  });
+}
+
+jld.pos.addRelatedEmail_success = function(data){
+  alert("Successfully attached related email. This notification will change from a pop up soon. The related email doesn't show up in the widget anywhere yet, but trust me: it's saved on the server.");
+}
+
+jld.pos.addRelatedEmail_error = function(){
+  alert("Error");
+}
+
+
 // A function to run after all elements are put into the widget.
 jld.pos.render = function() {
     // Render steps as tab
@@ -610,6 +644,10 @@ jld.pos.render = function() {
 			$(".jld #posMoveExpandedLayer").click();
 		});
 	});
+  
+  // Register click event for attaching a related email.
+  $(".jld .posEmailBtn.dsplyAttachment button").live('click', jld.pos.addRelatedEmail);
+  
 	// Hidden layer behind the float panel. This is to capture click outside panel
     $(".jld #posMoveExpandedLayer").click(function() {
         $(this).css('display', 'none');
